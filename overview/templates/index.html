@@ -1,10 +1,66 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="utf-8">
-        <title>トップページ</title>
-    </head>
-    <body>
-        <h1>Hello</h1>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenModel - 3Dモデルマネージャー</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>OpenModel</h1>
+            </div>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="#home">ホーム</a></li>
+                    <li><a href="#signup">サインアップ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ヒーロー部分 -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>3Dモデルを簡単に管理・共有</h2>
+            <p>GLB形式の3Dモデルを登録し、Unityプロジェクト上で直接活用できるプラットフォーム</p>
+            <div class="cta-buttons">
+                <a href="/models" class="btn btn-primary">モデルを登録</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 機能紹介 -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2>主な機能</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📤</div>
+                    <h3>簡単登録</h3>
+                    <p>GLB形式のモデル, json形式のボーンファイルをアップロードするだけで登録完了</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Unity統合</h3>
+                    <p>ダウンロードしたモデルをUnityプロジェクトで即座に利用可能</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 OpenModel. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/common.js' %}"></script>
+</body>
 </html>
