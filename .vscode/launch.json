@@ -11,6 +11,28 @@
             ],
             "django": true,
             "envFile": "${workspaceFolder}/.env",
+        },
+        {
+            "name": "makemigrations",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "makemigrations"
+            ],
+            "django": true,
+            "envFile": "${workspaceFolder}/.env",
+        },
+        {
+            "name": "migrate",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "migrate",
+            ],
+            "django": true,
+            "envFile": "${workspaceFolder}/.env",
         }
     ]
 }

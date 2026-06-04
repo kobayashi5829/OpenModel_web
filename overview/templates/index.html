@@ -1,35 +1,15 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenModel - 3Dモデルマネージャー</title>
-    <link rel="stylesheet" href="{% static 'css/common.css' %}">
-</head>
-<body>
-    <!-- ヘッダー -->
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <h1>OpenModel</h1>
-            </div>
-            <nav class="navbar">
-                <ul>
-                    <li><a href="#home">ホーム</a></li>
-                    <li><a href="#signup">サインアップ</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+{% extends "base.html" %}
 
+{% block title %}OpenModel{% endblock %}
+
+{% block content %}
     <!-- ヒーロー部分 -->
     <section id="home" class="hero">
         <div class="hero-content">
             <h2>3Dモデルを簡単に管理・共有</h2>
             <p>GLB形式の3Dモデルを登録し、Unityプロジェクト上で直接活用できるプラットフォーム</p>
             <div class="cta-buttons">
-                <a href="/models" class="btn btn-primary">モデルを登録</a>
+                <a href="{% url 'account_login' %}" class="btn btn-primary">モデルを登録</a>
             </div>
         </div>
     </section>
@@ -52,15 +32,5 @@
             </div>
         </div>
     </section>
+{% endblock %}
 
-    <!-- フッター -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 OpenModel. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="{% static 'js/common.js' %}"></script>
-</body>
-</html>

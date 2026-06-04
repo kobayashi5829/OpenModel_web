@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}OpenModel - 3Dモデルマネージャー{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>OpenModel</h1>
+            </div>
+            <nav class="navbar">
+                {% if user.is_authenticated %}
+                    <ul>
+                        <li><a href="#home">ホーム</a></li>
+                        <li><a href="{% url 'account_logout' %}">サインアウト</a></li>              
+                    </ul>
+                {% else %}
+                    <ul>
+                        <li><a href="{% url 'account_login' %}">サインイン</a></li>
+                        <li><a href="{% url 'account_signup' %}">サインアップ</a></li>
+                    </ul>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 OpenModel. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/common.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

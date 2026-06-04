@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}サインイン - OpenModel{% endblock %}
+
+{% block content %}
+<section class="login-section">
+    <div class="login-box">
+        <h2 class="login-title">サインイン</h2>
+        
+        <form method="post" class="login-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_login">Eメールアドレス or ユーザー名:</label>
+                <input 
+                    type="text" 
+                    name="login" 
+                    id="id_login" 
+                    placeholder="email or username"
+                    required
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="id_password">パスワード:</label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="id_password" 
+                    placeholder="password"
+                    required
+                    autocomplete="off"
+                >
+            </div>
+
+            <button type="submit" class="btn-submit">続ける</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
