@@ -11,23 +11,38 @@
 <body>
     <!-- ヘッダー -->
     <header class="header">
-        <div class="container">
-            <div class="logo">
-                <h1>OpenModel</h1>
-            </div>
-            <nav class="navbar">
+        <div class="container header-container">
+            <div class="header-left">
+                <div class="logo">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'overview:home' %}" class="logo-link"><h1>OpenModel</h1></a>
+                    {% else %}
+                        <a href="{% url 'overview:index' %}" class="logo-link"><h1>OpenModel</h1></a>
+                    {% endif %}
+                </div>
                 {% if user.is_authenticated %}
-                    <ul>
-                        <li><a href="#home">ホーム</a></li>
-                        <li><a href="{% url 'account_logout' %}">サインアウト</a></li>              
-                    </ul>
-                {% else %}
-                    <ul>
-                        <li><a href="{% url 'account_login' %}">サインイン</a></li>
-                        <li><a href="{% url 'account_signup' %}">サインアップ</a></li>
+                    <ul class="nav-main-list">
+                        <li><a href="#" class="nav-btn active" id="nav-btn-all">ホーム</a></li>
+                        <li><a href="#" class="nav-btn" id="nav-btn-public">パブリック</a></li>
+                        <li><a href="#" class="nav-btn" id="nav-btn-private">プライベート</a></li>
+                        <li><button class="nav-btn btn-upload" id="nav-btn-upload">アップロード</button></li>
                     </ul>
                 {% endif %}
-            </nav>
+            </div>
+            <div class="header-right">
+                <nav class="navbar">
+                    {% if user.is_authenticated %}
+                        <ul class="nav-auth-list">
+                            <li><a href="{% url 'account_logout' %}" class="nav-btn logout-btn">サインアウト</a></li>
+                        </ul>
+                    {% else %}
+                        <ul>
+                            <li><a href="{% url 'account_login' %}">サインイン</a></li>
+                            <li><a href="{% url 'account_signup' %}">サインアップ</a></li>
+                        </ul>
+                    {% endif %}
+                </nav>
+            </div>
         </div>
     </header>
 

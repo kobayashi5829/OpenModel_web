@@ -63,7 +63,7 @@ ACCOUNT_FORMS = {
 }
 
 # サインイン/サインアウトの遷移先
-LOGIN_REDIRECT_URL = 'overview:index'
+LOGIN_REDIRECT_URL = 'overview:home'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'overview:index'
 
 # サインアウトリンク有効化
@@ -157,5 +157,5 @@ STATICFILES_DIRS = (
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'model')
 MEDIA_URL = '/model/'

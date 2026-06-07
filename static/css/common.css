@@ -21,38 +21,110 @@ body {
 .header {
     background-color: #2c3e50;
     color: white;
-    padding: 1rem 0;
+    padding: 0.8rem 0;
     position: sticky;
     top: 0;
     z-index: 1000;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.header .container {
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
-.logo h1 {
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.logo-link {
+    text-decoration: none;
+}
+
+.logo-link h1 {
+    color: #f1f5f9 !important; /* 常に落ち着いた白 */
     font-size: 1.8rem;
     font-weight: bold;
+    transition: color 0.3s;
 }
 
+.logo-link:hover h1 {
+    color: #ffffff !important;
+}
+
+.nav-main-list {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-auth-list {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-btn {
+    color: rgba(241, 245, 249, 0.8) !important; /* 落ち着いた白の半透明 */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    background: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.nav-btn:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn.active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-upload {
+    border: 1px solid rgba(241, 245, 249, 0.4) !important;
+}
+
+.btn-upload:hover {
+    border-color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 非ログイン時のナビゲーション用スタイル */
 .navbar ul {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .navbar a {
-    color: white;
+    color: rgba(241, 245, 249, 0.8);
     text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
     transition: color 0.3s;
 }
 
 .navbar a:hover {
-    color: #3498db;
+    color: #ffffff;
 }
 
 /* ヒーロー部分 */
