@@ -53,9 +53,18 @@ AUTHENTICATION_BACKENDS = (
 # サインイン方法
 ACCOUNT_LOGIN_METHODS = {"username"}
 
+# メールアドレス不要設定
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+# カスタムサインアップフォームの指定
+ACCOUNT_FORMS = {
+    'signup': 'accounts.forms.CustomSignupForm',
+}
+
 # サインイン/サインアウトの遷移先
 LOGIN_REDIRECT_URL = 'overview:index'
-ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'overview:index'
 
 # サインアウトリンク有効化
 ACCOUNT_LOGOUT_ON_GET = True
@@ -147,3 +156,6 @@ STATICFILES_DIRS = (
 )
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/model/'

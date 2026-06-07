@@ -33,6 +33,17 @@
             ],
             "django": true,
             "envFile": "${workspaceFolder}/.env",
-        }
+        },
+        {
+            "name": "createsuperuser",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "createsuperuser",
+            ],
+            "django": true,
+            "envFile": "${workspaceFolder}/.env",
+        },
     ]
 }
