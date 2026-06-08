@@ -33,6 +33,7 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    max-width: 100% !important;
 }
 
 .header-left {
@@ -74,6 +75,53 @@ body {
     padding: 0;
 }
 
+.user-info-item {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    cursor: pointer;
+}
+
+.user-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    border-color: #ffffff;
+}
+
+.user-initial {
+    user-select: none;
+}
+
+.guest-avatar {
+    background: #475569;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.guest-avatar:hover {
+    border-color: #ffffff;
+}
+
+.guest-svg {
+    width: 18px;
+    height: 18px;
+    stroke: #e2e8f0;
+}
+
 .nav-btn {
     color: rgba(241, 245, 249, 0.8) !important; /* 落ち着いた白の半透明 */
     text-decoration: none;
@@ -111,6 +159,7 @@ body {
 /* 非ログイン時のナビゲーション用スタイル */
 .navbar ul {
     display: flex;
+    align-items: center;
     list-style: none;
     gap: 1.5rem;
 }
@@ -345,7 +394,20 @@ body {
 
     .header .container {
         flex-direction: column;
+        align-items: flex-start;
         gap: 1rem;
+    }
+
+    .header-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+        width: 100%;
+    }
+
+    .nav-main-list {
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 }
 

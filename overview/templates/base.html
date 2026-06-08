@@ -33,10 +33,23 @@
                 <nav class="navbar">
                     {% if user.is_authenticated %}
                         <ul class="nav-auth-list">
+                            <li class="user-info-item">
+                                <div class="user-avatar" title="ユーザー名: {{ user.username }}">
+                                    <span class="user-initial">{{ user.username|slice:":1"|upper }}</span>
+                                </div>
+                            </li>
                             <li><a href="{% url 'account_logout' %}" class="nav-btn logout-btn">サインアウト</a></li>
                         </ul>
                     {% else %}
                         <ul>
+                            <li class="user-info-item">
+                                <div class="user-avatar guest-avatar" title="ゲストユーザー">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="guest-svg">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                            </li>
                             <li><a href="{% url 'account_login' %}">サインイン</a></li>
                             <li><a href="{% url 'account_signup' %}">サインアップ</a></li>
                         </ul>
