@@ -41,7 +41,7 @@
                             <li><a href="{% url 'account_logout' %}" class="nav-btn logout-btn">サインアウト</a></li>
                         </ul>
                     {% else %}
-                        <ul>
+                        <ul class="nav-auth-list">
                             <li class="user-info-item">
                                 <div class="user-avatar guest-avatar" title="ゲストユーザー">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="guest-svg">
@@ -50,8 +50,8 @@
                                     </svg>
                                 </div>
                             </li>
-                            <li><a href="{% url 'account_login' %}">サインイン</a></li>
-                            <li><a href="{% url 'account_signup' %}">サインアップ</a></li>
+                            <li><a href="{% url 'account_login' %}" class="nav-btn">サインイン</a></li>
+                            <li><a href="{% url 'account_signup' %}" class="nav-btn">サインアップ</a></li>
                         </ul>
                     {% endif %}
                 </nav>
