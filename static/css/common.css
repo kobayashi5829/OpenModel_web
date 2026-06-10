@@ -93,12 +93,11 @@ body {
     font-size: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     border: 2px solid rgba(255, 255, 255, 0.8);
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    transition: box-shadow 0.2s, border-color 0.2s;
     cursor: pointer;
 }
 
 .user-avatar:hover {
-    transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     border-color: #ffffff;
 }
@@ -409,5 +408,243 @@ body {
         flex-wrap: wrap;
         gap: 0.5rem;
     }
+}
+
+/* ユーザーメニュードロップダウン */
+.dropdown-container {
+    position: relative;
+}
+
+/* ドロップダウンメニュー本体 */
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 240px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 1rem 0 0.5rem;
+    z-index: 1100;
+    display: none;
+    color: #333333;
+}
+
+.dropdown-menu.show {
+    display: block;
+    animation: fadeInDropdown 0.2s ease;
+}
+
+@keyframes fadeInDropdown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ドロップダウンヘッダー */
+.dropdown-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1rem 0.8rem;
+    text-align: center;
+}
+
+.menu-avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    cursor: default;
+}
+
+.menu-avatar:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.dropdown-username {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1e293b;
+    word-break: break-all;
+}
+
+.dropdown-divider {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 0;
+}
+
+/* 縦並びのボタン用コンテナ */
+.dropdown-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.8rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 共通のボタン用スタイル */
+.dropdown-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 38px; /* 縦のサイズを明示的に統一 */
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+}
+
+.menu-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 0.6rem;
+    flex-shrink: 0;
+}
+
+/* サインアウト：白色のボタン */
+.navbar .btn-white-logout {
+    background-color: #f8fafc; /* 白ベースのオフホワイト */
+    color: #1e293b !important; /* ユーザー名と同じ色(#1e293b)に修正 */
+    border: 1px solid #cbd5e1; /* 境界線を明示 */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* ドロップダウン背景と同化させないための影 */
+}
+
+.navbar .btn-white-logout:hover {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+    color: #1e293b !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.btn-white-logout .menu-icon {
+    stroke: #1e293b; /* アイコンも同色に統一 */
+}
+
+/* アカウント削除：赤色のボタン */
+.btn-red-delete {
+    background-color: #ef4444;
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* 高さと立体感をサインアウトに合わせる */
+}
+
+.btn-red-delete:hover {
+    background-color: #dc2626;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.btn-red-delete .menu-icon {
+    stroke: #ffffff;
+}
+
+/* アカウント削除確認モーダル（画面中央の大きなパネル） */
+.delete-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.delete-modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.delete-modal-card {
+    background: #ffffff;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
+    padding: 2.5rem 2.2rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.delete-modal-overlay.open .delete-modal-card {
+    transform: translateY(0);
+}
+
+.delete-confirm-message {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.8rem;
+}
+
+.delete-warning-text {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+/* モーダルフッター（ボタン配置） */
+.delete-modal-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.modal-btn {
+    flex: 1;
+    height: 42px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+/* はい（赤ボタン） */
+.btn-confirm-yes {
+    background-color: #ef4444;
+    color: #ffffff;
+}
+
+.btn-confirm-yes:hover {
+    background-color: #dc2626;
+}
+
+/* いいえ（白・グレーボタン） */
+.btn-confirm-no {
+    background-color: #ffffff;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+}
+
+.btn-confirm-no:hover {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
 }
 
