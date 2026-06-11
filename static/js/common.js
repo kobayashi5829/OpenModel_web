@@ -42,8 +42,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // アカウント削除モーダルの制御
     const deleteTrigger = document.getElementById('delete-account-trigger');
     const deleteModal = document.getElementById('delete-confirm-modal');
+    const deleteStep1 = document.getElementById('delete-step-1');
+    const deleteStep2 = document.getElementById('delete-step-2'); // <form>要素
     const deleteYesBtn = document.getElementById('delete-modal-yes');
     const deleteNoBtn = document.getElementById('delete-modal-no');
+    const deleteBackBtn = document.getElementById('delete-modal-back');
+    const deletePasswordInput = document.getElementById('delete-password-input');
+
+    // モーダルの表示状態を初期化（リセット）する関数
+    function resetDeleteModal() {
+        if (deleteStep1 && deleteStep2) {
+            deleteStep1.style.display = 'block';
+            deleteStep2.style.display = 'none';
+        }
+        if (deletePasswordInput) {
+            deletePasswordInput.value = '';
+        }
+    }
 
     if (deleteTrigger && deleteModal) {
         // モーダルを開く
@@ -52,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (userDropdown) {
                 userDropdown.classList.remove('show'); // ドロップダウンは閉じる
             }
+            resetDeleteModal();
             deleteModal.classList.add('open');
         });
 
@@ -62,11 +78,32 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // はいボタンで処理（モック動作）
-        if (deleteYesBtn) {
+        // はいボタンでパスワード入力画面へ遷移
+        if (deleteYesBtn && deleteStep1 && deleteStep2) {
             deleteYesBtn.addEventListener('click', function() {
-                alert('UIモックのため、実際にはアカウントは削除されません。');
+                deleteStep1.style.display = 'none';
+                deleteStep2.style.display = 'block';
+                if (deletePasswordInput) {
+                    deletePasswordInput.focus(); // 入力欄にフォーカス
+                }
+            });
+        }
+
+        // キャンセルボタンでモーダルを閉じる
+        if (deleteBackBtn) {
+            deleteBackBtn.addEventListener('click', function() {
                 deleteModal.classList.remove('open');
+            });
+        }
+
+        // フォーム送信時のバリデーション（退会処理の実行）
+        if (deleteStep2) {
+            deleteStep2.addEventListener('submit', function(e) {
+                if (deletePasswordInput && !deletePasswordInput.value.trim()) {
+                    e.preventDefault();
+                    alert('パスワードを入力してください。');
+                    deletePasswordInput.focus();
+                }
             });
         }
     }

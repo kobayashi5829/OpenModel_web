@@ -50,21 +50,20 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-# サインイン方法
-ACCOUNT_LOGIN_METHODS = {"username"}
-
-# メールアドレス不要設定
-ACCOUNT_EMAIL_REQUIRED = False
+# サインイン/サインアップ方法
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_VERIFICATION = "none"
-
-# カスタムサインアップフォームの指定
-ACCOUNT_FORMS = {
-    'signup': 'accounts.forms.CustomSignupForm',
-}
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_REQUIRED = True
 
 # サインイン/サインアウトの遷移先
 LOGIN_REDIRECT_URL = 'overview:home'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'overview:index'
+
+# カスタムフォーム
+ACCOUNT_FORMS = {
+    'login': 'accounts.forms.CustomLoginForm',
+}
 
 # サインアウトリンク有効化
 ACCOUNT_LOGOUT_ON_GET = True

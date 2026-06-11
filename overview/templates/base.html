@@ -44,6 +44,7 @@
                                             <span class="user-initial">{{ user.username|slice:":1"|upper }}</span>
                                         </div>
                                         <span class="dropdown-username">{{ user.username }}</span>
+                                        <span class="dropdown-email">{{ user.email }}</span>
                                     </div>
                                     <hr class="dropdown-divider">
                                     <div class="dropdown-buttons">
@@ -64,12 +65,12 @@
                     {% else %}
                         <ul class="nav-auth-list">
                             <li class="user-info-item">
-                                <div class="user-avatar guest-avatar" title="ゲストユーザー">
+                                <a href="{% url 'account_login' %}" class="user-avatar guest-avatar" title="サインイン" style="text-decoration: none;">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="guest-svg">
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
-                                </div>
+                                </a>
                             </li>
                             <li><a href="{% url 'account_login' %}" class="nav-btn">サインイン</a></li>
                             <li><a href="{% url 'account_signup' %}" class="nav-btn">サインアップ</a></li>
@@ -79,6 +80,18 @@
             </div>
         </div>
     </header>
+
+    <!-- メッセージ通知 -->
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="message-item {{ message.tags }}">
+                    <div class="message-content">{{ message }}</div>
+                    <button class="message-close-btn" onclick="const item=this.parentElement; const container=item.parentElement; item.remove(); if(container.children.length===0){container.remove();}">&times;</button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <!-- メインコンテンツ -->
     <main>
@@ -94,7 +107,8 @@
 
     <!-- アカウント削除確認モーダル -->
     <div class="delete-modal-overlay" id="delete-confirm-modal">
-        <div class="delete-modal-card">
+        <!-- Step 1: 削除確認 -->
+        <div class="delete-modal-card" id="delete-step-1">
             <div class="delete-confirm-message">本当にアカウントを削除しますか？</div>
             <div class="delete-warning-text">※この操作は取り消せません。登録した3Dモデル等のデータはすべて失われます。</div>
             <div class="delete-modal-footer">
@@ -102,6 +116,20 @@
                 <button class="modal-btn btn-confirm-no" id="delete-modal-no">いいえ</button>
             </div>
         </div>
+
+        <!-- Step 2: パスワード入力 -->
+        <form class="delete-modal-card" id="delete-step-2" style="display: none;" action="{% url 'overview:unsubscribe' %}" method="post">
+            {% csrf_token %}
+            <div class="delete-confirm-message">本人確認</div>
+            <div class="delete-warning-text" style="margin-bottom: 15px;">アカウントを安全に削除するため、パスワードを入力してください。</div>
+            <div class="password-input-container" style="margin-bottom: 20px;">
+                <input type="password" name="password" id="delete-password-input" class="delete-password-input" placeholder="パスワードを入力してください" required autocomplete="current-password">
+            </div>
+            <div class="delete-modal-footer">
+                <button type="submit" class="modal-btn btn-confirm-yes" id="delete-modal-confirm">削除する</button>
+                <button type="button" class="modal-btn btn-confirm-no" id="delete-modal-back">キャンセル</button>
+            </div>
+        </form>
     </div>
 
     <script src="{% static 'js/common.js' %}"></script>

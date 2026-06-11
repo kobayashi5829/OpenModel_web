@@ -1,8 +1,8 @@
-from allauth.account.forms import SignupForm
+from allauth.account.forms import LoginForm
 
-class CustomSignupForm(SignupForm):
+class CustomLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # フォームのフィールド定義からメールアドレスを削除する
-        if 'email' in self.fields:
-            del self.fields['email']
+
+        self.fields["login"].label = "ユーザー名 or メールアドレス"
+        self.fields["login"].widget.attrs["placeholder"] = "ユーザー名 or メールアドレス"
