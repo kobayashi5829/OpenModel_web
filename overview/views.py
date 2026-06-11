@@ -33,3 +33,7 @@ class UnsubscribeView(LoginRequiredMixin, View):
         messages.success(request, "退会が完了しました。")
 
         return redirect("overview:index")
+    
+class UploadView(LoginRequiredMixin, generic.CreateView):
+    model = Model
+    template_name = 'upload.html'
