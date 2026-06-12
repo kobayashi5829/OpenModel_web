@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}モデルアップロード{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/model_upload.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="upload-wrapper">
+    <div class="upload-card">
+        <div class="upload-header">
+            <h2>3Dモデルをアップロード</h2>
+            <p>GLB形式の3Dモデルと、管理用の情報を登録します</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" id="model-upload-form" novalidate>
+            {% csrf_token %}
+
+            <!-- 全体エラーの表示 -->
+            {% if form.non_field_errors %}
+                <div class="non-field-errors">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- ネームタグ -->
+            <div class="form-group {% if form.name.errors %}has-error{% endif %}">
+                <label for="{{ form.name.id_for_label }}">ネームタグ</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.name.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- モデルタイプ -->
+            <div class="form-group {% if form.is_type.errors %}has-error{% endif %}">
+                <label for="{{ form.is_type.id_for_label }}">モデルタイプ</label>
+                {{ form.is_type }}
+                {% if form.is_type.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.is_type.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- GLBファイル (ドラッグ＆ドロップ対応) -->
+            <div class="form-group {% if form.glbfile.errors %}has-error{% endif %}">
+                <label>3Dモデル (.glb)</label>
+                <div class="file-drop-zone" id="glb-drop-zone">
+                    <div class="drop-zone-icon">📦</div>
+                    <div class="drop-zone-text" id="glb-placeholder">ここにGLBファイルをドラッグ＆ドロップ、または<span>ファイルを選択</span></div>
+                    <div class="drop-zone-subtext">対応形式: .glb</div>
+                    <!-- 隠された実際のファイルインプット -->
+                    {{ form.glbfile }}
+                    
+                    <!-- 選択中のプレビュー表示 -->
+                    <div class="file-preview" id="glb-preview">
+                        <span class="preview-icon">📦</span>
+                        <div class="preview-details">
+                            <div class="preview-filename" id="glb-filename"></div>
+                            <div class="preview-filesize" id="glb-filesize"></div>
+                        </div>
+                        <button type="button" class="preview-remove-btn" id="glb-remove-btn" title="ファイルを削除">&times;</button>
+                    </div>
+                </div>
+                {% if form.glbfile.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.glbfile.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- 設定ファイル (ドラッグ＆ドロップ対応、モデルタイプがotherの時のみ表示) -->
+            <div class="form-group {% if form.avaterfile.errors %}has-error{% endif %}" id="avatar-upload-group">
+                <label>Avaterファイル (.json)</label>
+                <div class="file-drop-zone" id="avatar-drop-zone">
+                    <div class="drop-zone-icon">📄</div>
+                    <div class="drop-zone-text" id="avatar-placeholder">ここにJSONファイルをドラッグ＆ドロップ、または<span>ファイルを選択</span></div>
+                    <div class="drop-zone-subtext">対応形式: .json</div>
+                    <!-- 隠された実際のファイルインプット -->
+                    {{ form.avaterfile }}
+                    
+                    <!-- 選択中のプレビュー表示 -->
+                    <div class="file-preview" id="avatar-preview-container">
+                        <span class="preview-icon">📄</span>
+                        <div class="preview-details">
+                            <div class="preview-filename" id="avatar-filename"></div>
+                            <div class="preview-filesize" id="avatar-filesize"></div>
+                        </div>
+                        <button type="button" class="preview-remove-btn" id="avatar-remove-btn" title="ファイルを削除">&times;</button>
+                    </div>
+                </div>
+                {% if form.avaterfile.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.avaterfile.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- 非公開設定トグル -->
+            <div class="toggle-group">
+                <div class="toggle-label-wrapper">
+                    <span class="toggle-title">非公開設定 (Private)</span>
+                    <span class="toggle-desc">このモデルを自分だけのプライベートモデルにします</span>
+                </div>
+                <label class="switch">
+                    {{ form.is_private }}
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- 送信ボタン -->
+            <div class="btn-submit-container">
+                <button type="submit" class="btn-upload-submit" id="upload-submit-btn">
+                    <span class="spinner" id="submit-spinner"></span>
+                    <span id="submit-btn-text">アップロードを開始</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/model_upload.js' %}"></script>
+{% endblock %}

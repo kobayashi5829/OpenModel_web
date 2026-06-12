@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.core.validators import FileExtensionValidator
 from accounts.models import CustomUser
 
 class Model(models.Model):
@@ -14,8 +15,19 @@ class Model(models.Model):
     user = models.ForeignKey(CustomUser, verbose_name='ユーザー', on_delete=models.CASCADE)
     is_private = models.BooleanField(default=False)
     is_type = models.CharField(max_length=100, choices=ModelType.choices)
-    glbfile = models.FileField(upload_to="glb/")
-    avaterfile = models.FileField(upload_to="avater/", blank=True, null=True)
+    glbfile = models.FileField(upload_to="glb/",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=["glb"]
+            )
+        ])
+    avaterfile = models.FileField(upload_to="avater/",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=["json"]
+            )
+        ],
+        blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Model'

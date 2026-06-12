@@ -67,62 +67,14 @@
                     <div class="no-models-icon">📦</div>
                     <h3>登録されている3Dモデルがありません</h3>
                     <p>あなただけの3Dモデルをアップロードして、管理しましょう。</p>
-                    <button class="btn-upload-trigger" id="btn-upload-empty-trigger">
+                    <a href="{% url 'overview:model_upload' %}" class="btn-upload-trigger" id="btn-upload-empty-trigger" style="text-decoration: none; display: inline-block;">
                         最初のモデルを登録する
-                    </button>
+                    </a>
                 </div>
             {% endfor %}
         </div>
     </div>
 </section>
-
-<!-- アップロードモーダル (フロントエンドUIのみ) -->
-<div class="modal-overlay" id="upload-modal">
-    <div class="modal-content-card">
-        <button class="modal-close-btn" id="modal-close-btn">&times;</button>
-        <div class="modal-header">
-            <h3>3Dモデルをアップロード</h3>
-            <p>GLB形式ファイルと、サムネイル用の画像を登録します</p>
-        </div>
-        
-        <!-- UI実装用フォーム (ダミー) -->
-        <form method="POST" enctype="multipart/form-data" class="signup-form" style="margin-top: 1rem;">
-            {% csrf_token %}
-            
-            <div class="form-group" style="margin-bottom: 1.2rem;">
-                <label for="modal-model-name" style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">ネームタグ</label>
-                <input type="text" id="modal-model-name" placeholder="例: アバター1, 武器モデル" style="width:100%; padding:0.7rem; border:2px solid #e2e8f0; border-radius:8px; outline:none;" required>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 1.2rem;">
-                <label for="modal-model-type" style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">モデルタイプ</label>
-                <select id="modal-model-type" style="width:100%; padding:0.7rem; border:2px solid #e2e8f0; border-radius:8px; outline:none; background:white;">
-                    <option value="avatern">Avatern (アバター)</option>
-                    <option value="other">その他 (小物・背景等)</option>
-                </select>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 1.2rem;">
-                <label for="modal-glb-file" style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">GLB ファイル (.glb)</label>
-                <input type="file" id="modal-glb-file" accept=".glb" style="width:100%; padding:0.5rem; border:2px solid #e2e8f0; border-radius:8px; outline:none;" required>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 1.2rem;">
-                <label for="modal-thumb-file" style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">アバターサムネイル画像 (任意)</label>
-                <input type="file" id="modal-thumb-file" accept="image/*" style="width:100%; padding:0.5rem; border:2px solid #e2e8f0; border-radius:8px; outline:none;">
-            </div>
-
-            <div class="checkbox-group" style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1.5rem;">
-                <input type="checkbox" id="modal-is-private" style="width:18px; height:18px; cursor:pointer; accent-color:#667eea;">
-                <label for="modal-is-private" style="font-size:0.9rem; color:#5a6a85; cursor:pointer;">非公開設定 (Privateにする)</label>
-            </div>
-
-            <button type="button" class="btn-login" id="dummy-upload-submit-btn" style="width:100%; padding:0.9rem; background:linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; box-shadow:0 4px 15px rgba(46,204,113,0.25);" onclick="alert('UIのみの実装のため、アップロードはシミュレートされます。')">
-                アップロードを開始する
-            </button>
-        </form>
-    </div>
-</div>
 {% endblock %}
 
 {% block extra_js %}

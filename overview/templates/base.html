@@ -23,9 +23,8 @@
                 {% if user.is_authenticated %}
                     <ul class="nav-main-list">
                         <li><a href="#" class="nav-btn active" id="nav-btn-all">ホーム</a></li>
-                        <li><a href="#" class="nav-btn" id="nav-btn-public">パブリック</a></li>
-                        <li><a href="#" class="nav-btn" id="nav-btn-private">プライベート</a></li>
-                        <li><button class="nav-btn btn-upload" id="nav-btn-upload">アップロード</button></li>
+                        <li><a href="#" class="nav-btn" id="nav-btn-public">パブリックルーム</a></li>
+                        <li><a href="{% url 'overview:model_upload' %}" class="nav-btn btn-upload" id="nav-btn-upload">アップロード</a></li>
                     </ul>
                 {% endif %}
             </div>

@@ -4,7 +4,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views import generic
 from django.views import View
+from django.urls import reverse_lazy
 from .models import Model
+from .forms import ModelUploadForm
 
 class IndexView(generic.TemplateView):
     template_name = "index.html"
@@ -34,6 +36,19 @@ class UnsubscribeView(LoginRequiredMixin, View):
 
         return redirect("overview:index")
     
-class UploadView(LoginRequiredMixin, generic.CreateView):
+class ModelUploadView(LoginRequiredMixin, generic.CreateView):
     model = Model
-    template_name = 'upload.html'
+    template_name = 'model_upload.html'
+    form_class = ModelUploadForm
+    success_url = reverse_lazy('overview:home')
+    
+    def form_valid(self, form):
+        model = form.save(commit=False)
+        model.user = self.request.user
+        model.save()
+        messages.success(self.request, 'モデルアップロードを完了しました。')
+        return super().form_valid(form)
+        
+    def form_invalid(self, form):
+        messages.error(self.request, 'モデルアップロードに失敗しました。')
+        return super().form_invalid(form)

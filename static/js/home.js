@@ -1,4 +1,4 @@
-// ホーム画面のインタラクティブ機能（フィルタリングとモーダル表示）
+// ホーム画面のインタラクティブ機能（フィルタリング）
 
 document.addEventListener('DOMContentLoaded', () => {
     // フィルター関連の要素取得
@@ -7,12 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnPrivate = document.getElementById('nav-btn-private');
     const filterIndicator = document.getElementById('filter-text-indicator');
     const cards = document.querySelectorAll('.model-dashboard-card');
-
-    // アップロードモーダル関連の要素取得
-    const btnUpload = document.getElementById('nav-btn-upload');
-    const btnUploadEmpty = document.getElementById('btn-upload-empty-trigger');
-    const modalOverlay = document.getElementById('upload-modal');
-    const modalClose = document.getElementById('modal-close-btn');
 
     // 1. フィルタリング機能
     const applyFilter = (filterType) => {
@@ -79,42 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             setBtnActive(btnPrivate);
             applyFilter('private');
-        });
-    }
-
-    // 2. モーダル表示切り替え
-    const openModal = (e) => {
-        if (e) e.preventDefault();
-        if (modalOverlay) {
-            modalOverlay.classList.add('open');
-            document.body.style.overflow = 'hidden'; // 背後のスクロール防止
-        }
-    };
-
-    const closeModal = () => {
-        if (modalOverlay) {
-            modalOverlay.classList.remove('open');
-            document.body.style.overflow = ''; // スクロール復元
-        }
-    };
-
-    if (btnUpload) {
-        btnUpload.addEventListener('click', openModal);
-    }
-    if (btnUploadEmpty) {
-        btnUploadEmpty.addEventListener('click', openModal);
-    }
-
-    if (modalClose) {
-        modalClose.addEventListener('click', closeModal);
-    }
-
-    // モーダルの外側クリックで閉じる
-    if (modalOverlay) {
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) {
-                closeModal();
-            }
         });
     }
 
