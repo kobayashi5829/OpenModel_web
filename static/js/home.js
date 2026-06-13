@@ -1,4 +1,4 @@
-// ホーム画面のインタラクティブ機能（フィルタリング）
+// ホーム画面のインタラクティブ機能（フィルタリング＆リアルタイム検索）
 
 document.addEventListener('DOMContentLoaded', () => {
     // フィルター関連の要素取得
@@ -8,39 +8,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterIndicator = document.getElementById('filter-text-indicator');
     const cards = document.querySelectorAll('.model-dashboard-card');
 
-    // 1. フィルタリング機能
-    const applyFilter = (filterType) => {
+    // 検索関連の要素取得
+    const searchInput = document.getElementById('home-search-input');
+    const searchClearBtn = document.getElementById('search-clear-btn');
+    const noResultsWrapper = document.getElementById('no-search-results');
+
+    // 現在のフィルター状態と検索状態を保持
+    let currentFilter = 'all';
+    let currentSearchQuery = '';
+
+    // フィルターと検索を統合した絞り込み処理
+    const applyFilterAndSearch = () => {
         let visibleCount = 0;
+        const query = currentSearchQuery.toLowerCase().trim();
 
         cards.forEach(card => {
             const isPrivate = card.dataset.private === 'true';
             
-            if (filterType === 'all') {
+            // カード内のモデル名（h3タグ）を取得
+            const modelNameEl = card.querySelector('.model-info-body h3');
+            const modelName = modelNameEl ? modelNameEl.textContent.toLowerCase() : '';
+
+            // 1. 公開/非公開フィルターの条件判定
+            let matchesFilter = false;
+            if (currentFilter === 'all') {
+                matchesFilter = true;
+            } else if (currentFilter === 'public') {
+                matchesFilter = !isPrivate;
+            } else if (currentFilter === 'private') {
+                matchesFilter = isPrivate;
+            }
+
+            // 2. 検索キーワードの条件判定
+            const matchesSearch = modelName.includes(query);
+
+            // 両方の条件を満たす場合のみ表示
+            if (matchesFilter && matchesSearch) {
                 card.classList.remove('hide');
                 visibleCount++;
-            } else if (filterType === 'public') {
-                if (!isPrivate) {
-                    card.classList.remove('hide');
-                    visibleCount++;
-                } else {
-                    card.classList.add('hide');
-                }
-            } else if (filterType === 'private') {
-                if (isPrivate) {
-                    card.classList.remove('hide');
-                    visibleCount++;
-                } else {
-                    card.classList.add('hide');
-                }
+            } else {
+                card.classList.add('hide');
             }
         });
 
-        // フィルターインジケーターテキストの更新
+        // 3. インジケーターテキストの更新
         if (filterIndicator) {
             let label = 'My Model';
-            if (filterType === 'public') label = 'Public (公開)';
-            if (filterType === 'private') label = 'Private (非公開)';
-            filterIndicator.textContent = `表示中: ${label} (${visibleCount}件)`;
+            if (currentFilter === 'public') label = 'Public (公開)';
+            if (currentFilter === 'private') label = 'Private (非公開)';
+            
+            if (query) {
+                filterIndicator.textContent = `表示中: ${label} [検索: "${currentSearchQuery}"] (${visibleCount}件)`;
+            } else {
+                filterIndicator.textContent = `表示中: ${label} (${visibleCount}件)`;
+            }
+        }
+
+        // 4. 検索結果が0件の場合のプレースホルダーのトグル
+        if (noResultsWrapper) {
+            if (visibleCount === 0 && cards.length > 0) {
+                noResultsWrapper.style.display = 'block';
+            } else {
+                noResultsWrapper.style.display = 'none';
+            }
         }
     };
 
@@ -52,11 +82,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activeBtn) activeBtn.classList.add('active');
     };
 
+    // フィルターボタンのイベント登録
     if (btnAll) {
         btnAll.addEventListener('click', (e) => {
             e.preventDefault();
             setBtnActive(btnAll);
-            applyFilter('all');
+            currentFilter = 'all';
+            applyFilterAndSearch();
         });
     }
 
@@ -64,7 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btnPublic.addEventListener('click', (e) => {
             e.preventDefault();
             setBtnActive(btnPublic);
-            applyFilter('public');
+            currentFilter = 'public';
+            applyFilterAndSearch();
         });
     }
 
@@ -72,10 +105,38 @@ document.addEventListener('DOMContentLoaded', () => {
         btnPrivate.addEventListener('click', (e) => {
             e.preventDefault();
             setBtnActive(btnPrivate);
-            applyFilter('private');
+            currentFilter = 'private';
+            applyFilterAndSearch();
+        });
+    }
+
+    // 検索入力のイベント監視
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value;
+            
+            // クリアボタンの表示/非表示トグル
+            if (searchClearBtn) {
+                searchClearBtn.style.display = currentSearchQuery ? 'flex' : 'none';
+            }
+            
+            applyFilterAndSearch();
+        });
+    }
+
+    // 検索クリアボタンのイベント登録
+    if (searchClearBtn) {
+        searchClearBtn.addEventListener('click', () => {
+            if (searchInput) {
+                searchInput.value = '';
+                currentSearchQuery = '';
+                searchClearBtn.style.display = 'none';
+                searchInput.focus();
+                applyFilterAndSearch();
+            }
         });
     }
 
     // 初期化表示の反映
-    applyFilter('all');
+    applyFilterAndSearch();
 });

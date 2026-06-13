@@ -16,6 +16,25 @@
             <span class="filter-indicator" id="filter-text-indicator">表示中: すべて (...)</span>
         </div>
 
+        <!-- 検索バー -->
+        <div class="home-search-container">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="home-search-input" placeholder="ネームタグで検索..." autocomplete="off">
+                <button type="button" id="search-clear-btn" class="search-clear-btn" title="検索ワードをクリア">&times;</button>
+            </div>
+        </div>
+
+        <!-- 検索結果が0件の場合のメッセージ -->
+        <div class="no-search-results-wrapper" id="no-search-results" style="display: none;">
+            <div class="no-search-results-icon">🔍</div>
+            <h3>一致する3Dモデルが見つかりません</h3>
+            <p>キーワードを変更するか、フィルター条件をリセットしてください。</p>
+        </div>
+
         <!-- 3Dモデル一覧グリッド -->
         <div class="models-grid-layout">
             {% for model in object_list %}
@@ -78,5 +97,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/home.js' %}"></script>
+<script src="{% static 'js/home.js' %}?v={% now 'U' %}"></script>
 {% endblock %}
