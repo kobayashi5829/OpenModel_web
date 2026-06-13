@@ -94,7 +94,6 @@
 .form-group select:focus {
     border-color: #667eea;
     background-color: #fff;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
 }
 
 /* ドラッグ＆ドロップファイル入力 */
@@ -119,7 +118,6 @@
 .file-drop-zone.dragover {
     border-color: #667eea;
     background-color: rgba(102, 126, 234, 0.05);
-    transform: scale(1.01);
 }
 
 .file-drop-zone input[type="file"] {
@@ -410,7 +408,6 @@ input:checked + .slider:before {
 .form-group.has-error select,
 .form-group.has-error .file-drop-zone {
     border-color: #e74c3c;
-    box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
 }
 
 /* アニメーション */

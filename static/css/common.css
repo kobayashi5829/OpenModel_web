@@ -272,7 +272,6 @@ body {
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
@@ -316,11 +315,10 @@ body {
     border-radius: 0.5rem;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
 }
 
 .model-card:hover {
-    transform: scale(1.05);
+    /* ホバー時の拡大を無効化 */
 }
 
 .model-preview {
