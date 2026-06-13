@@ -4,7 +4,7 @@
 {% block title %}モデルアップロード{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/model_upload.css' %}">
+<link rel="stylesheet" href="{% static 'css/model_upload.css' %}?v={% now 'U' %}">
 {% endblock %}
 
 {% block content %}
@@ -54,7 +54,7 @@
             </div>
 
             <!-- GLBファイル (ドラッグ＆ドロップ対応) -->
-            <div class="form-group {% if form.glbfile.errors %}has-error{% endif %}">
+            <div class="form-group {% if form.glbfile.errors %}has-error{% endif %}" id="glb-form-group">
                 <label>3Dモデル (.glb)</label>
                 <div class="file-drop-zone" id="glb-drop-zone">
                     <div class="drop-zone-icon">📦</div>
@@ -73,6 +73,11 @@
                         <button type="button" class="preview-remove-btn" id="glb-remove-btn" title="ファイルを削除">&times;</button>
                     </div>
                 </div>
+                <!-- クライアントサイド警告用メッセージ -->
+                <ul class="errorlist" id="glb-client-error" style="display: none;">
+                    <li>GLBファイルを選択してください。</li>
+                </ul>
+                
                 {% if form.glbfile.errors %}
                     <ul class="errorlist">
                         {% for error in form.glbfile.errors %}
@@ -136,5 +141,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/model_upload.js' %}"></script>
+<script src="{% static 'js/model_upload.js' %}?v={% now 'U' %}"></script>
 {% endblock %}

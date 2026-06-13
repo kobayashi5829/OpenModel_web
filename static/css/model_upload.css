@@ -176,6 +176,39 @@
     display: flex;
 }
 
+/* ファイル選択済みのスタイル */
+.file-drop-zone.has-file {
+    border-style: solid;
+    border-color: #10b981; /* 成功時のエメラルドグリーン */
+    background-color: rgba(16, 185, 129, 0.04); /* 淡い緑色の背景 */
+    cursor: default;
+}
+
+.file-drop-zone.has-file input[type="file"] {
+    pointer-events: none; /* ファイル選択済みの時はドロップゾーン全体のクリックを無効化 */
+}
+
+.file-drop-zone.has-file .drop-zone-icon,
+.file-drop-zone.has-file .drop-zone-text,
+.file-drop-zone.has-file .drop-zone-subtext {
+    display: none; /* 通常時の表示物を非表示に */
+}
+
+.file-drop-zone.has-file .file-preview {
+    margin-top: 0;
+    width: 100%;
+    max-width: 90%;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border-color: #10b981;
+    border-left: 4px solid #10b981; /* 左側にアクセントの緑線を入れて美しく */
+    z-index: 2; /* inputの上に重ねてクリックできるようにする */
+}
+
+.preview-remove-btn {
+    pointer-events: auto; /* inputのpointer-events: noneを貫通してクリックできるように明示 */
+}
+
 .preview-icon {
     font-size: 1.5rem;
     color: #34495e;
