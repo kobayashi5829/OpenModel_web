@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitText = document.getElementById('submit-btn-text');
     const submitSpinner = document.getElementById('submit-spinner');
     
-    // モデルタイプとアバターファイルグループの連動制御
+    // モデルタイプとアバターファイルグループ of 連動制御
     const modelTypeSelect = document.getElementById('id_is_type');
     const avatarGroup = document.getElementById('avatar-upload-group');
     const avatarInput = document.getElementById('id_avaterfile');
@@ -23,28 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const glbRemoveBtn = document.getElementById('glb-remove-btn');
     const glbPlaceholder = document.getElementById('glb-placeholder');
 
-    console.log('DOM Elements check:', {
-        uploadForm: !!uploadForm,
-        modelTypeSelect: !!modelTypeSelect,
-        avatarGroup: !!avatarGroup,
-        avatarInput: !!avatarInput,
-        glbDropZone: !!glbDropZone,
-        glbInput: !!glbInput,
-        glbPreview: !!glbPreview
-    });
-
-    // アバターサムネイル画像アップロード用
+    // アバター設定ファイルアップロード用
     const avatarDropZone = document.getElementById('avatar-drop-zone');
     const avatarPreviewContainer = document.getElementById('avatar-preview-container');
-    const avatarImgPreview = document.getElementById('avatar-img-preview');
     const avatarFilename = document.getElementById('avatar-filename');
     const avatarFilesize = document.getElementById('avatar-filesize');
     const avatarRemoveBtn = document.getElementById('avatar-remove-btn');
     const avatarPlaceholder = document.getElementById('avatar-placeholder');
 
-
-
-    // 2. ドラッグ＆ドロップ共通イベントハンドラ
+    // ==========================================
+    // 1. ドラッグ＆ドロップ共通イベントハンドラ
+    // ==========================================
     const preventDefaults = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -53,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const highlightDropZone = (zone) => () => zone.classList.add('dragover');
     const unhighlightDropZone = (zone) => () => zone.classList.remove('dragover');
 
-    // ドラッグ＆ドロップイベントリスナー登録用
     const setupDragAndDrop = (zone, input, fileHandler) => {
         if (!zone || !input) return;
 
@@ -82,10 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // 3. GLBファイルの制御
+    // ==========================================
+    // 2. GLBファイルの制御
+    // ==========================================
     const handleGlbFileSelect = (file) => {
         if (!file) return;
-        console.log('handleGlbFileSelect triggered for:', file.name);
         
         // ファイル名とサイズの表示
         if (glbFilename) glbFilename.textContent = file.name;
@@ -97,12 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // ドロップゾーンにファイル選択済みのクラスを追加
         if (glbDropZone) glbDropZone.classList.add('has-file');
-
-        // エラー表示をクリア
-        const glbClientError = document.getElementById('glb-client-error');
-        const glbFormGroup = document.getElementById('glb-form-group');
-        if (glbClientError) glbClientError.style.display = 'none';
-        if (glbFormGroup) glbFormGroup.classList.remove('has-error');
     };
 
     const resetGlbPreview = () => {
@@ -112,12 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // ドロップゾーンからファイル選択済みのクラスを削除
         if (glbDropZone) glbDropZone.classList.remove('has-file');
-
-        // エラー表示をクリア
-        const glbClientError = document.getElementById('glb-client-error');
-        const glbFormGroup = document.getElementById('glb-form-group');
-        if (glbClientError) glbClientError.style.display = 'none';
-        if (glbFormGroup) glbFormGroup.classList.remove('has-error');
     };
 
     if (glbInput) {
@@ -139,11 +116,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // GLBファイルのドラッグ＆ドロップセットアップ
     setupDragAndDrop(glbDropZone, glbInput, handleGlbFileSelect);
 
-
-    // 4. 設定ファイル (アバターファイル) の制御
+    // ==========================================
+    // 3. 設定ファイル (アバターファイル) の制御
+    // ==========================================
     const handleAvatarFileSelect = (file) => {
         if (!file) return;
-        console.log('handleAvatarFileSelect triggered for:', file.name);
 
         if (avatarFilename) avatarFilename.textContent = file.name;
         if (avatarFilesize) avatarFilesize.textContent = formatBytes(file.size);
@@ -187,8 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // アバター画像のドラッグ＆ドロップセットアップ
     setupDragAndDrop(avatarDropZone, avatarInput, handleAvatarFileSelect);
 
-
-    // 1. モデルタイプに応じたアバターファイル入力エリアの表示制御
+    // ==========================================
+    // 4. モデルタイプとアバター入力エリアの連動
+    // ==========================================
     const toggleAvatarUploadVisibility = () => {
         if (!modelTypeSelect || !avatarGroup) return;
         
@@ -214,8 +192,9 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleAvatarUploadVisibility();
     }
 
-
+    // ==========================================
     // 5. ユーティリティ: バイト数表示フォーマット
+    // ==========================================
     function formatBytes(bytes, decimals = 2) {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
@@ -225,30 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
 
-
-    // 6. フォーム送信時の処理 (ローディング表現)
+    // ==========================================
+    // 6. フォーム送信時のローディング処理
+    // ==========================================
     if (uploadForm) {
         uploadForm.addEventListener('submit', (e) => {
-            // GLBファイルが添付されているか最終確認
-            if (glbInput && glbInput.files.length === 0) {
-                e.preventDefault();
-                
-                // クライアントサイド警告用メッセージを表示
-                const glbClientError = document.getElementById('glb-client-error');
-                const glbFormGroup = document.getElementById('glb-form-group');
-                if (glbClientError) {
-                    glbClientError.style.display = 'block';
-                }
-                if (glbFormGroup) {
-                    glbFormGroup.classList.add('has-error');
-                    // shakeアニメーションを再実行させるためにクラスを付け直す
-                    glbFormGroup.style.animation = 'none';
-                    glbFormGroup.offsetHeight; // リフロー
-                    glbFormGroup.style.animation = '';
-                }
-                return;
-            }
-
             // 送信ボタンの無効化とスピナーの開始
             if (submitBtn) {
                 submitBtn.disabled = true;

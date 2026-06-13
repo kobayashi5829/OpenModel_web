@@ -28,7 +28,7 @@
             {% endif %}
 
             <!-- ネームタグ -->
-            <div class="form-group {% if form.name.errors %}has-error{% endif %}">
+            <div class="form-group {% if form.name.errors %}has-error{% endif %}" id="name-form-group">
                 <label for="{{ form.name.id_for_label }}">ネームタグ</label>
                 {{ form.name }}
                 {% if form.name.errors %}
@@ -73,11 +73,6 @@
                         <button type="button" class="preview-remove-btn" id="glb-remove-btn" title="ファイルを削除">&times;</button>
                     </div>
                 </div>
-                <!-- クライアントサイド警告用メッセージ -->
-                <ul class="errorlist" id="glb-client-error" style="display: none;">
-                    <li>GLBファイルを選択してください。</li>
-                </ul>
-                
                 {% if form.glbfile.errors %}
                     <ul class="errorlist">
                         {% for error in form.glbfile.errors %}
