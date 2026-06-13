@@ -68,16 +68,7 @@
                         <h3>{{ model.name }}</h3>
                         <p class="model-update-date">更新日: {{ model.uploaded_at|date:"Y-m-d H:i" }}</p>
                         
-                        <div class="model-action-footer">
-                            <a href="{{ model.glbfile.url }}" download class="btn-download-model">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:2px;">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                    <polyline points="7 10 12 15 17 10"></polyline>
-                                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                                </svg>
-                                ダウンロード
-                            </a>
-                        </div>
+
                     </div>
                 </div>
             {% empty %}
