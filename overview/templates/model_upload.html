@@ -62,8 +62,17 @@
                     <div class="drop-zone-subtext">対応形式: .glb</div>
                     <!-- 隠された実際のファイルインプット -->
                     {{ form.glbfile }}
+                    <!-- 隠された自動キャプチャ画像インプット -->
+                    <div style="display: none;">
+                        {{ form.glbfacefile }}
+                    </div>
                     
-                    <!-- 選択中のプレビュー表示 -->
+                    <!-- バックグラウンド自動キャプチャ用の隠し3Dビューアー (背面配置でWebGL描画を強制、カメラを250%引いて正面から撮影) -->
+                    <div class="hidden-viewer-container" style="position: absolute; left: 0; top: 0; width: 300px; height: 300px; pointer-events: none; opacity: 0.01; z-index: -100; overflow: hidden;">
+                        <model-viewer id="glb-3d-viewer" camera-orbit="180deg 75deg 250%" field-of-view="60deg" alt="3D Model Preview"></model-viewer>
+                    </div>
+                    
+                    <!-- 選択中のプレビュー表示 (シンプルなカード形式) -->
                     <div class="file-preview" id="glb-preview">
                         <span class="preview-icon">📦</span>
                         <div class="preview-details">
@@ -136,5 +145,6 @@
 {% endblock %}
 
 {% block extra_js %}
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
 <script src="{% static 'js/model_upload.js' %}?v={% now 'U' %}"></script>
 {% endblock %}

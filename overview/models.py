@@ -15,7 +15,7 @@ class Model(models.Model):
     user = models.ForeignKey(CustomUser, verbose_name='ユーザー', on_delete=models.CASCADE)
     is_private = models.BooleanField(default=False)
     is_type = models.CharField(max_length=100, choices=ModelType.choices)
-    glbfile = models.FileField(upload_to="glb/", blank=False,
+    glbfile = models.FileField(upload_to="glb/",
         validators=[
             FileExtensionValidator(
                 allowed_extensions=["glb"]
@@ -28,6 +28,7 @@ class Model(models.Model):
             )
         ],
         blank=True, null=True)
+    glbfacefile = models.ImageField(upload_to="glbfacefile/")
 
     class Meta:
         verbose_name_plural = 'Model'

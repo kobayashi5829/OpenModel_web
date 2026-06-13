@@ -199,8 +199,12 @@
     background-color: #ffffff;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     border-color: #10b981;
-    border-left: 4px solid #10b981; /* 左側にアクセントの緑線を入れて美しく */
-    z-index: 2; /* inputの上に重ねてクリックできるようにする */
+    border-left: 4px solid #10b981;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem 1rem;
 }
 
 .preview-remove-btn {
@@ -366,12 +370,11 @@ input:checked + .slider:before {
 }
 
 .btn-upload-submit:hover:not(:disabled) {
-    box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, #5a6fd6 0%, #693f96 100%); /* ホバー時はグラデーションを少し変化 */
 }
 
 .btn-upload-submit:active:not(:disabled) {
-    transform: translateY(0);
+    opacity: 0.9;
 }
 
 .btn-upload-submit:disabled {

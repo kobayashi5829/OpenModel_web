@@ -12,7 +12,7 @@ class ModelUploadForm(forms.ModelForm):
 
     class Meta:
         model = Model
-        fields = ('name', 'is_type', 'is_private', 'glbfile', 'avaterfile')
+        fields = ('name', 'is_type', 'is_private', 'glbfile', 'avaterfile', 'glbfacefile')
 
     def clean_glbfile(self):
         glbfile = self.cleaned_data.get('glbfile')

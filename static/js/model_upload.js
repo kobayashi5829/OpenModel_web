@@ -1,7 +1,7 @@
 // モデルアップロードページのインタラクティブ機能
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('model_upload.js: DOMContentLoaded Fired');
+
     
     // フォーム関連要素
     const uploadForm = document.getElementById('model-upload-form');
@@ -22,6 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const glbFilesize = document.getElementById('glb-filesize');
     const glbRemoveBtn = document.getElementById('glb-remove-btn');
     const glbPlaceholder = document.getElementById('glb-placeholder');
+
+    // 自動キャプチャサムネイル用の隠しインプットと3Dビューアー
+    const glbfaceInput = document.getElementById('id_glbfacefile');
+    const glb3dViewer = document.getElementById('glb-3d-viewer');
+    let currentGlbUrl = null;
+    let currentSelectedFile = null;
+    let captureCompleted = false;
+    let submitAfterCapture = false;
 
     // アバター設定ファイルアップロード用
     const avatarDropZone = document.getElementById('avatar-drop-zone');
@@ -76,6 +84,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleGlbFileSelect = (file) => {
         if (!file) return;
         
+        // キャプチャ完了状態をリセット
+        captureCompleted = false;
+        submitAfterCapture = false;
+        
+        // ファイル名を保持
+        currentSelectedFile = file;
+
+        // 古いBlob URLの破棄と新しいURLの適用
+        if (currentGlbUrl) {
+            URL.revokeObjectURL(currentGlbUrl);
+        }
+        currentGlbUrl = URL.createObjectURL(file);
+        if (glb3dViewer) {
+            glb3dViewer.src = currentGlbUrl;
+        }
+
         // ファイル名とサイズの表示
         if (glbFilename) glbFilename.textContent = file.name;
         if (glbFilesize) glbFilesize.textContent = formatBytes(file.size);
@@ -90,11 +114,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const resetGlbPreview = () => {
         if (glbInput) glbInput.value = '';
+        if (glbfaceInput) glbfaceInput.value = ''; // キャプチャ画像インプットもクリア
         if (glbPreview) glbPreview.classList.remove('active');
         if (glbPlaceholder) glbPlaceholder.style.display = 'flex';
         
         // ドロップゾーンからファイル選択済みのクラスを削除
         if (glbDropZone) glbDropZone.classList.remove('has-file');
+
+        // model-viewerのsrcをクリア
+        if (glb3dViewer) {
+            glb3dViewer.removeAttribute('src');
+        }
+
+        // URLオブジェクトをメモリから解放
+        if (currentGlbUrl) {
+            URL.revokeObjectURL(currentGlbUrl);
+            currentGlbUrl = null;
+        }
+        currentSelectedFile = null;
+        captureCompleted = false;
+        submitAfterCapture = false;
     };
 
     if (glbInput) {
@@ -115,6 +154,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // GLBファイルのドラッグ＆ドロップセットアップ
     setupDragAndDrop(glbDropZone, glbInput, handleGlbFileSelect);
+
+    // ==========================================
+    // 2.5 3Dモデル読み込み完了時の自動キャプチャ処理
+    // ==========================================
+    if (glb3dViewer) {
+        glb3dViewer.addEventListener('load', async () => {
+            if (!currentSelectedFile) return;
+
+            
+            try {
+                // カスタム要素が定義されるまで待機する
+                if (window.customElements) {
+                    await customElements.whenDefined('model-viewer');
+                }
+
+                // カメラ位置と視野角を明示的に設定（背面ではなく正面から撮影するために180degに設定）
+                glb3dViewer.setAttribute('camera-orbit', '180deg 75deg 250%');
+                glb3dViewer.setAttribute('field-of-view', '60deg');
+                glb3dViewer.cameraOrbit = "180deg 75deg 250%"; // 180deg回転して正面に配置し、250%離す
+                glb3dViewer.fieldOfView = "60deg";
+                
+                // jumpToGoal メソッドの存在チェックと適用
+                let waitTime = 1500; // モデルの初期化とカメラ位置の安定のために十分な時間（1500ms）を確保
+                if (typeof glb3dViewer.jumpToGoal === 'function') {
+                    glb3dViewer.jumpToGoal();
+                }
+                
+                // カメラ遷移完了とレンダリングの安定を待つ
+                await new Promise(resolve => setTimeout(resolve, waitTime));
+                
+                const blob = await glb3dViewer.toBlob({
+                    mimeType: 'image/png',
+                    idealAspect: true
+                });
+                
+                if (blob) {
+                    const fileName = currentSelectedFile.name.replace(/\.[^/.]+$/, "") + "_face.png";
+                    const faceFile = new File([blob], fileName, { type: 'image/png' });
+                    
+                    const container = new DataTransfer();
+                    container.items.add(faceFile);
+                    if (glbfaceInput) {
+                        glbfaceInput.files = container.files;
+                    }
+                    
+                    captureCompleted = true;
+                    
+                    // 送信ボタンが押されて待機状態だった場合、自動でフォームを送信
+                    if (submitAfterCapture && uploadForm) {
+                        uploadForm.submit();
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to capture GLB face image:', err);
+            }
+        });
+    }
 
     // ==========================================
     // 3. 設定ファイル (アバターファイル) の制御
@@ -209,6 +305,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     if (uploadForm) {
         uploadForm.addEventListener('submit', (e) => {
+            // キャプチャ画像生成がまだ完了していない場合、送信を保留して待機する
+            if (glbInput && glbInput.files.length > 0 && !captureCompleted) {
+                e.preventDefault();
+                submitAfterCapture = true;
+                
+                // 送信ボタンを「処理中...」に変更して無効化
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                }
+                if (submitText) {
+                    submitText.textContent = '3Dモデル処理中...';
+                }
+                if (submitSpinner) {
+                    submitSpinner.classList.add('active');
+                }
+                return;
+            }
+
             // 送信ボタンの無効化とスピナーの開始
             if (submitBtn) {
                 submitBtn.disabled = true;

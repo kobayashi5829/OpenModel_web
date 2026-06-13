@@ -4,7 +4,7 @@
 {% block title %}ホーム{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}?v={% now 'U' %}">
 {% endblock %}
 
 {% block content %}
@@ -29,8 +29,8 @@
 
                     <!-- サムネイル画像エリア -->
                     <div class="model-thumbnail-wrapper">
-                        {% if model.avaterfile %}
-                            <img src="{{ model.avaterfile.url }}" alt="{{ model.name }}">
+                        {% if model.glbfacefile %}
+                            <img src="{{ model.glbfacefile.url }}?v={{ model.uploaded_at|date:'U' }}" alt="{{ model.name }}">
                         {% else %}
                             <div class="thumbnail-placeholder">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
