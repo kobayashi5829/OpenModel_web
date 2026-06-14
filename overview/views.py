@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.views import generic
 from django.views import View
@@ -8,10 +8,17 @@ from django.urls import reverse_lazy
 from .models import Model
 from .forms import ModelUploadForm
 
+class OnlyYouMixin(UserPassesTestMixin):
+    raise_exception = True
+
+    def test_func(self):
+        model = get_object_or_404(Model, pk=self.kwargs['pk'])
+        return self.request.user == model.user or model.is_private == False
+    
 class IndexView(generic.TemplateView):
     template_name = "index.html"
 
-class HomeView(generic.ListView):
+class HomeView(LoginRequiredMixin, generic.ListView):
     model = Model
     template_name = 'home.html'
 
@@ -19,7 +26,7 @@ class HomeView(generic.ListView):
         models = Model.objects.filter(user=self.request.user).order_by('-uploaded_at')
         return models
 
-class PublicView(generic.ListView):
+class PublicView(LoginRequiredMixin, generic.ListView):
     model = Model
     template_name = 'public.html'
 
@@ -27,11 +34,11 @@ class PublicView(generic.ListView):
         models = Model.objects.filter(is_private=False).order_by('-uploaded_at')
         return models
     
-class ModelDetailView(LoginRequiredMixin, generic.DetailView):
+class ModelDetailView(LoginRequiredMixin, OnlyYouMixin, generic.DetailView):
     model = Model
     template_name = 'model_detail.html'
 
-class ModelUploadView(LoginRequiredMixin, generic.CreateView):
+class ModelUploadView(LoginRequiredMixin, OnlyYouMixin, generic.CreateView):
     model = Model
     template_name = 'model_upload.html'
     form_class = ModelUploadForm
@@ -48,7 +55,7 @@ class ModelUploadView(LoginRequiredMixin, generic.CreateView):
         messages.error(self.request, 'モデルアップロードに失敗しました。')
         return super().form_invalid(form)
     
-class ModelDeleteView(LoginRequiredMixin, generic.DeleteView):
+class ModelDeleteView(LoginRequiredMixin, OnlyYouMixin, generic.DeleteView):
     model = Model
     success_url = reverse_lazy('overview:home')
 
