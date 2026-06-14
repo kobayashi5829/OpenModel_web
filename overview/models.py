@@ -33,5 +33,15 @@ class Model(models.Model):
     class Meta:
         verbose_name_plural = 'Model'
 
+    def delete(self, *args, **kwargs):
+        if self.glbfile:
+            self.glbfile.delete(save=False)
+        if self.avaterfile:
+            self.avaterfile.delete(save=False)
+        if self.glbfacefile:
+            self.glbfacefile.delete(save=False)
+
+        super().delete(*args, **kwargs)
+
     def __str__(self):
         return self.name

@@ -35,49 +35,48 @@
             <p>キーワードを変更するか、フィルター条件をリセットしてください。</p>
         </div>
 
-        <!-- 3Dモデル一覧グリッド -->
         <div class="models-grid-layout">
             {% for model in object_list %}
-                <div class="model-dashboard-card" data-private="{% if model.is_private %}true{% else %}false{% endif %}">
-                    <!-- 公開ステータスバッジ -->
-                    {% if model.is_private %}
-                        <span class="status-badge private-badge">Private</span>
-                    {% else %}
-                        <span class="status-badge public-badge">Public</span>
-                    {% endif %}
-
-                    <!-- サムネイル画像エリア -->
-                    <div class="model-thumbnail-wrapper">
-                        {% if model.glbfacefile %}
-                            <img src="{{ model.glbfacefile.url }}?v={{ model.uploaded_at|date:'U' }}" alt="{{ model.name }}">
+                <a href="{% url 'overview:model-detail' model.id %}" class="model-card-link" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="model-dashboard-card" data-private="{% if model.is_private %}true{% else %}false{% endif %}">
+                        <!-- 公開ステータスバッジ -->
+                        {% if model.is_private %}
+                            <span class="status-badge private-badge">Private</span>
                         {% else %}
-                            <div class="thumbnail-placeholder">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                                </svg>
-                                <span>No Image (GLB)</span>
-                            </div>
+                            <span class="status-badge public-badge">Public</span>
                         {% endif %}
-                    </div>
 
-                    <!-- カード詳細 -->
-                    <div class="model-info-body">
-                        <span class="model-type-tag">{{ model.get_is_type_display|default:model.is_type }}</span>
-                        <h3>{{ model.name }}</h3>
-                        <p class="model-update-date">更新日: {{ model.uploaded_at|date:"Y-m-d H:i" }}</p>
-                        
+                        <!-- サムネイル画像エリア -->
+                        <div class="model-thumbnail-wrapper">
+                            {% if model.glbfacefile %}
+                                <img src="{{ model.glbfacefile.url }}?v={{ model.uploaded_at|date:'U' }}" alt="{{ model.name }}">
+                            {% else %}
+                                <div class="thumbnail-placeholder">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                    </svg>
+                                    <span>No Image (GLB)</span>
+                                </div>
+                            {% endif %}
+                        </div>
 
+                        <!-- カード詳細 -->
+                        <div class="model-info-body">
+                            <span class="model-type-tag">{{ model.get_is_type_display|default:model.is_type }}</span>
+                            <h3>{{ model.name }}</h3>
+                            <p class="model-update-date">更新日: {{ model.uploaded_at|date:"Y-m-d H:i" }}</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             {% empty %}
                 <!-- 登録データが無い場合のプレースホルダー表示 -->
                 <div class="no-models-wrapper" style="grid-column: 1 / -1;">
                     <div class="no-models-icon">📦</div>
                     <h3>登録されている3Dモデルがありません</h3>
                     <p>あなただけの3Dモデルをアップロードして、管理しましょう。</p>
-                    <a href="{% url 'overview:model_upload' %}" class="btn-upload-trigger" id="btn-upload-empty-trigger" style="text-decoration: none; display: inline-block;">
+                    <a href="{% url 'overview:model-upload' %}" class="btn-upload-trigger" id="btn-upload-empty-trigger" style="text-decoration: none; display: inline-block;">
                         最初のモデルを登録する
                     </a>
                 </div>

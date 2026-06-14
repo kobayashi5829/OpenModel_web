@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ model.name }} - モデル詳細{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/model_detail.css' %}?v={% now 'U' %}">
+{% endblock %}
+
+{% block content %}
+<div class="detail-wrapper">
+    <div class="detail-container">
+        <!-- 戻るボタンリンク -->
+        <div class="detail-back-nav">
+            <a href="{% url 'overview:home' %}" class="btn-back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                一覧に戻る
+            </a>
+        </div>
+
+        <div class="detail-content-layout">
+            <!-- 左カラム: 3Dプレビュービューアー -->
+            <div class="detail-viewer-panel">
+                <div class="viewer-card">
+                    <model-viewer 
+                        id="detail-3d-viewer" 
+                        src="{{ model.glbfile.url }}" 
+                        camera-controls 
+                        auto-rotate 
+                        shadow-intensity="1.5" 
+                        shadow-softness="0.8" 
+                        environment-image="neutral" 
+                        exposure="1.0"
+                        alt="{{ model.name }}の3Dプレビュー"
+                        ar-status="not-present">
+                        
+                        <!-- 読み込み中のインジケーター -->
+                        <div class="viewer-loading-overlay" slot="poster">
+                            <span class="viewer-spinner"></span>
+                            <span>3Dモデルをロード中...</span>
+                        </div>
+                    </model-viewer>
+                </div>
+            </div>
+
+            <!-- 右カラム: モデル詳細情報 & 操作パネル -->
+            <div class="detail-info-panel">
+                <div class="info-card">
+                    <!-- ヘッダー部 -->
+                    <div class="info-header">
+                        <div class="info-tags">
+                            <span class="type-tag">{{ model.get_is_type_display|default:model.is_type }}</span>
+                            {% if model.is_private %}
+                                <span class="status-badge private-badge">Private (非公開)</span>
+                            {% else %}
+                                <span class="status-badge public-badge">Public (公開)</span>
+                            {% endif %}
+                        </div>
+                        <h2>{{ model.name }}</h2>
+                        <p class="update-date">最終更新日時: {{ model.uploaded_at|date:"Y-m-d H:i:s" }}</p>
+                    </div>
+
+                    <!-- 仕様・詳細セクション -->
+                    <div class="info-details-section">
+                        <h4 class="section-title">ファイル情報</h4>
+                        <table class="detail-table">
+                            <tr>
+                                <th>3Dモデル (GLB)</th>
+                                <td>モデルファイル ({{ model.glbfile.size|filesizeformat }})</td>
+                            </tr>
+                            {% if model.avaterfile %}
+                            <tr>
+                                <th>アバター設定 (JSON)</th>
+                                <td>アバターファイル ({{ model.avaterfile.size|filesizeformat }})</td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+
+                    <!-- アクションセクション -->
+                    <div class="info-actions-section">
+                        <a href="{{ model.glbfile.url }}" download class="btn-action btn-download-glb">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            3Dモデル (GLB) をダウンロード
+                        </a>
+
+                        {% if model.avaterfile %}
+                            <a href="{{ model.avaterfile.url }}" download class="btn-action btn-download-json">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                設定ファイル (JSON) をダウンロード
+                            </a>
+                        {% endif %}
+
+                        <button type="button" id="btn-show-delete-modal" class="btn-action btn-delete">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                            </svg>
+                            モデルを削除する
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- モデル削除確認モーダル（アカウント削除とUIを統一） -->
+<div class="delete-modal-overlay" id="model-delete-confirm-modal">
+    <div class="delete-modal-card">
+        <div class="delete-confirm-message">本当に「{{ model.name }}」を削除しますか？</div>
+        <div class="delete-warning-text">※この操作は取り消せません。モデルファイルおよび設定ファイルは完全に削除されます。</div>
+        <div class="delete-modal-footer">
+            <form action="{% url 'overview:model-delete' model.pk %}" method="post" style="flex: 1; display: flex;">
+                {% csrf_token %}
+                <button type="submit" class="modal-btn btn-confirm-yes" style="width: 100%;">はい</button>
+            </form>
+            <button type="button" class="modal-btn btn-confirm-no" id="btn-cancel-delete" style="flex: 1;">いいえ</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteBtn = document.getElementById('btn-show-delete-modal');
+        const cancelBtn = document.getElementById('btn-cancel-delete');
+        const modal = document.getElementById('model-delete-confirm-modal');
+
+        if (deleteBtn && cancelBtn && modal) {
+            // モーダルを表示
+            deleteBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                modal.classList.add('open');
+            });
+
+            // モーダルを非表示 (キャンセルボタン)
+            cancelBtn.addEventListener('click', function() {
+                modal.classList.remove('open');
+            });
+
+            // モーダルの外側をクリックしたら閉じる
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('open');
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
