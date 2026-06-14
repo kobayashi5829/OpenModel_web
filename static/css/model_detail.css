@@ -258,3 +258,10 @@
     opacity: 0.95;
 }
 
+/* 灰色の作者名タグ */
+.status-badge.author-badge {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+

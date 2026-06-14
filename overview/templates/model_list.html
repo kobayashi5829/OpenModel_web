@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% block list_title %}モデル一覧{% endblock %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/model_list.css' %}?v={% now 'U' %}">
+{% block extra_list_css %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<section class="home-section">
+    <div class="container">
+        <!-- ページヘッダー表示エリア -->
+        <div class="home-header-block">
+            <h2>{% block page_header_title %}モデル一覧{% endblock %}</h2>
+            <span class="filter-indicator" id="filter-text-indicator">{% block page_header_subtitle %}一覧{% endblock %}</span>
+        </div>
+
+        <!-- 検索バー -->
+        <div class="home-search-container">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="search-input" placeholder="{% block search_placeholder %}検索...{% endblock %}" autocomplete="off">
+                <button type="button" id="search-clear-btn" class="search-clear-btn" title="検索ワードをクリア" style="display: none;">&times;</button>
+            </div>
+        </div>
+
+        <!-- 検索結果が0件の場合のメッセージ -->
+        <div class="no-search-results-wrapper" id="no-search-results" style="display: none;">
+            <div class="no-search-results-icon">🔍</div>
+            <h3>一致する3Dモデルが見つかりません</h3>
+            <p>キーワードを変更するか、フィルター条件をリセットしてください。</p>
+        </div>
+
+        <div class="models-grid-layout">
+            {% for model in object_list %}
+                <a href="{% block model_detail_url %}{% url 'overview:model-detail' model.id %}{% endblock %}" class="model-card-link" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="model-dashboard-card" {% block model_card_attrs %}{% endblock %}>
+                        
+                        <!-- カード内バッジ -->
+                        {% block model_card_badge %}{% endblock %}
+
+                        <!-- サムネイル画像エリア -->
+                        <div class="model-thumbnail-wrapper">
+                            {% if model.glbfacefile %}
+                                <img src="{{ model.glbfacefile.url }}?v={{ model.uploaded_at|date:'U' }}" alt="{{ model.name }}">
+                            {% else %}
+                                <div class="thumbnail-placeholder">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                    </svg>
+                                    <span>No Image (GLB)</span>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- カード詳細 -->
+                        <div class="model-info-body">
+                            <div class="card-meta-row">
+                                <span class="model-type-tag">{{ model.get_is_type_display|default:model.is_type }}</span>
+                                {% block model_card_meta_extra %}{% endblock %}
+                            </div>
+                            <h3>{{ model.name }}</h3>
+                            <p class="model-update-date">更新日: {{ model.uploaded_at|date:"Y-m-d H:i" }}</p>
+                        </div>
+                    </div>
+                </a>
+            {% empty %}
+                <!-- 登録データが無い場合のプレースホルダー表示 -->
+                {% block empty_placeholder %}{% endblock %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/model_list.js' %}?v={% now 'U' %}"></script>
+{% block extra_list_js %}{% endblock %}
+{% endblock %}

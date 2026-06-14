@@ -19,6 +19,14 @@ class HomeView(generic.ListView):
         models = Model.objects.filter(user=self.request.user).order_by('-uploaded_at')
         return models
 
+class PublicView(generic.ListView):
+    model = Model
+    template_name = 'public.html'
+
+    def get_queryset(self):
+        models = Model.objects.filter(is_private=False).order_by('-uploaded_at')
+        return models
+    
 class ModelDetailView(LoginRequiredMixin, generic.DetailView):
     model = Model
     template_name = 'model_detail.html'

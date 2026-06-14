@@ -1,3 +1,7 @@
+html {
+    overflow-y: scroll;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -725,3 +729,137 @@ body {
     opacity: 1;
 }
 
+/* ナビゲーションのセグメントコントロール化 */
+.nav-container-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.nav-segment-control {
+    display: flex;
+    background-color: rgba(15, 23, 42, 0.3);
+    padding: 3px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.segment-btn {
+    color: rgba(241, 245, 249, 0.7) !important;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.45rem 1.2rem;
+    border-radius: 17px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    display: inline-block;
+}
+
+.segment-btn:hover {
+    color: #ffffff !important;
+}
+
+/* 選択されているボタンを目立たせる */
+.segment-btn.active {
+    color: #1e293b !important;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* 独立したアップロードボタン（落ち着いた透過白ボーダーデザイン） */
+.nav-btn-upload {
+    color: rgba(241, 245, 249, 0.8) !important;
+    background: transparent;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.45rem 1rem;
+    border-radius: 20px;
+    border: 1px solid rgba(241, 245, 249, 0.4);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.nav-btn-upload:hover {
+    color: #ffffff !important;
+    border-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn-upload.active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* レスポンシブ対応 (768px以下) */
+@media (max-width: 768px) {
+    .nav-container-wrapper {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+    .nav-segment-control {
+        flex: 1;
+    }
+    .segment-btn {
+        flex: 1;
+        padding: 0.45rem 0.5rem;
+    }
+}
+
+/* パブリック＆ホーム共通：カードメタ行 */
+.card-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem; /* このマージンのみを h3 との余白にする */
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* 共通：モデル種別タグ */
+.model-type-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6366f1;
+    background-color: #e0e7ff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+/* メタ行内のタグは下マージンをリセット */
+.card-meta-row .model-type-tag {
+    margin-bottom: 0 !important;
+}
+
+/* 作者名バッジ */
+.owner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #475569;
+    background-color: #f1f5f9;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    max-width: 140px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.owner-badge svg {
+    color: #64748b;
+    flex-shrink: 0;
+}

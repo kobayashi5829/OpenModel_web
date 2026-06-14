@@ -53,10 +53,20 @@
                     <div class="info-header">
                         <div class="info-tags">
                             <span class="type-tag">{{ model.get_is_type_display|default:model.is_type }}</span>
-                            {% if model.is_private %}
-                                <span class="status-badge private-badge">Private (非公開)</span>
+                            {% if request.GET.from == 'public' %}
+                                <span class="status-badge author-badge">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    作者: {{ model.user.username }}
+                                </span>
                             {% else %}
-                                <span class="status-badge public-badge">Public (公開)</span>
+                                {% if model.is_private %}
+                                    <span class="status-badge private-badge">Private (非公開)</span>
+                                {% else %}
+                                    <span class="status-badge public-badge">Public (公開)</span>
+                                {% endif %}
                             {% endif %}
                         </div>
                         <h2>{{ model.name }}</h2>

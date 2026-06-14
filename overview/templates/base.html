@@ -21,11 +21,23 @@
                     {% endif %}
                 </div>
                 {% if user.is_authenticated %}
-                    <ul class="nav-main-list">
-                        <li><a href="#" class="nav-btn active" id="nav-btn-all">ホーム</a></li>
-                        <li><a href="#" class="nav-btn" id="nav-btn-public">パブリックルーム</a></li>
-                        <li><a href="{% url 'overview:model-upload' %}" class="nav-btn btn-upload" id="nav-btn-upload">アップロード</a></li>
-                    </ul>
+                    <div class="nav-container-wrapper">
+                        <!-- ホーム / パブリックの切り替えセグメント -->
+                        <div class="nav-segment-control">
+                            <a href="{% url 'overview:home' %}" class="segment-btn {% if request.resolver_match.url_name == 'home' %}active{% endif %}" id="nav-btn-all">ホーム</a>
+                            <a href="{% url 'overview:public' %}" class="segment-btn {% if request.resolver_match.url_name == 'public' %}active{% endif %}" id="nav-btn-public">パブリック</a>
+                        </div>
+                        
+                        <!-- アップロードボタンは独立したアクションボタンにする -->
+                        <a href="{% url 'overview:model-upload' %}" class="nav-btn-upload {% if request.resolver_match.url_name == 'model-upload' %}active{% endif %}" id="nav-btn-upload">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            アップロード
+                        </a>
+                    </div>
                 {% endif %}
             </div>
             <div class="header-right">
