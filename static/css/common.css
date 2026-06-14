@@ -815,6 +815,201 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+}
+
+.modal-btn {
+    flex: 1;
+    height: 42px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+/* はい（赤ボタン） */
+.btn-confirm-yes {
+    background-color: #ef4444;
+    color: #ffffff;
+}
+
+.btn-confirm-yes:hover {
+    background-color: #dc2626;
+}
+
+/* いいえ（白・グレーボタン） */
+.btn-confirm-no {
+    background-color: #ffffff;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+}
+
+.btn-confirm-no:hover {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+/* パスワード入力フィールド */
+.delete-password-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.delete-password-input:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+/* メッセージ通知 */
+/* メッセージ通知（Toast通知として重ねて表示） */
+.messages-container {
+    position: fixed;
+    top: 90px; /* ヘッダーのすぐ下に重ねて表示 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 480px; /* カードサイズに合わせる */
+    z-index: 2000;
+    padding: 0;
+    margin: 0;
+    pointer-events: none; /* コンソール操作等を邪魔しない */
+}
+
+.message-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1.25rem;
+    margin-bottom: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.85); /* 下のグラデーション背景を程よく透かす */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 浮き上がっているように見せる薄い影 */
+    pointer-events: auto; /* ボタンやカード自体はクリックできるように */
+}
+
+.message-item.success {
+    color: #059669;
+    border: 1px solid #10b981;
+}
+
+.message-item.error {
+    color: #dc2626;
+    border: 1px solid #ef4444;
+}
+
+.message-close-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.message-close-btn:hover {
+    opacity: 1;
+}
+
+/* ナビゲーションのセグメントコントロール化 */
+.nav-container-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.nav-segment-control {
+    display: flex;
+    background-color: rgba(15, 23, 42, 0.3);
+    padding: 3px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.segment-btn {
+    color: rgba(241, 245, 249, 0.7) !important;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.45rem 1.2rem;
+    border-radius: 17px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    display: inline-block;
+}
+
+.segment-btn:hover {
+    color: #ffffff !important;
+}
+
+/* 選択されているボタンを目立たせる */
+.segment-btn.active {
+    color: #1e293b !important;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* 独立したアップロードボタン（落ち着いた透過白ボーダーデザイン） */
+.nav-btn-upload {
+    color: rgba(241, 245, 249, 0.8) !important;
+    background: transparent;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.45rem 1rem;
+    border-radius: 20px;
+    border: 1px solid rgba(241, 245, 249, 0.4);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.nav-btn-upload:hover {
+    color: #ffffff !important;
+    border-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn-upload.active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* レスポンシブ対応 (768px以下) */
+@media (max-width: 768px) {
+    .nav-container-wrapper {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+    .nav-segment-control {
+        flex: 1;
+    }
+    .segment-btn {
+        flex: 1;
+        padding: 0.45rem 0.5rem;
+    }
+}
+
+/* パブリック＆ホーム共通：カードメタ行 */
+.card-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 0.5rem; /* このマージンのみを h3 との余白にする */
     flex-wrap: wrap;
     gap: 0.5rem;
@@ -829,10 +1024,12 @@ body {
     font-weight: 700;
     color: #6366f1;
     background-color: #e0e7ff;
-    padding: 0.2rem 0.6rem;
+    padding: 0 0.6rem;
+    height: 24px;
     border-radius: 6px;
     margin-bottom: 0.5rem;
-    line-height: 1.2;
+    line-height: 1;
+    box-sizing: border-box;
 }
 
 /* メタ行内のタグは下マージンをリセット */
@@ -849,14 +1046,16 @@ body {
     font-weight: 600;
     color: #475569;
     background-color: #f1f5f9;
-    padding: 0.2rem 0.6rem;
+    padding: 0 0.6rem;
+    height: 24px;
     border-radius: 6px;
     border: 1px solid #e2e8f0;
     max-width: 140px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.2;
+    line-height: 1;
+    box-sizing: border-box;
 }
 
 .owner-badge svg {

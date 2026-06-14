@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ model.name }} - モデル詳細{% endblock %}
+{% block title %}モデル：{{ model.name }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/model_detail.css' %}?v={% now 'U' %}">
@@ -59,7 +59,7 @@
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
-                                    作者: {{ model.user.username }}
+                                    制作者: {{ model.user.username }}
                                 </span>
                             {% else %}
                                 {% if model.is_private %}

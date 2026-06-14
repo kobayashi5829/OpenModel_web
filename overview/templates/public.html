@@ -1,11 +1,11 @@
 {% extends "model_list.html" %}
 
-{% block list_title %}パブリックルーム - OpenModel{% endblock %}
+{% block list_title %}パブリックルーム{% endblock %}
 
 {% block page_header_title %}パブリックルーム{% endblock %}
 {% block page_header_subtitle %}公開モデル一覧 (...){% endblock %}
 
-{% block search_placeholder %}モデル名やアップロード者で検索...{% endblock %}
+{% block search_placeholder %}モデル名や制作者で検索...{% endblock %}
 
 {% block model_detail_url %}{% url 'overview:model-detail' model.id %}?from=public{% endblock %}
 
