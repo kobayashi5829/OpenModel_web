@@ -265,3 +265,66 @@
     border: 1px solid #cbd5e1;
 }
 
+/* UUID表示とコピーボタン */
+.uuid-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    vertical-align: middle;
+}
+
+.btn-copy-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 6px;
+    color: #4f46e5;
+    background-color: #f1f5f9;
+    transition: all 0.2s ease;
+}
+
+.btn-copy-icon:hover {
+    color: #312e81;
+    background-color: #e2e8f0;
+}
+
+/* コピーツールチップ（吹き出し） */
+.copy-tooltip {
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background-color: #0f172a;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+
+.copy-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: #0f172a;
+}
+
+.copy-tooltip.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+}
+

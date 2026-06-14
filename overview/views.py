@@ -1,3 +1,4 @@
+from pathlib import Path
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -5,6 +6,7 @@ from django.contrib import messages
 from django.views import generic
 from django.views import View
 from django.urls import reverse_lazy
+from django.http import FileResponse
 from .models import Model
 from .forms import ModelUploadForm
 
@@ -38,7 +40,7 @@ class ModelDetailView(LoginRequiredMixin, OnlyYouMixin, generic.DetailView):
     model = Model
     template_name = 'model_detail.html'
 
-class ModelUploadView(LoginRequiredMixin, OnlyYouMixin, generic.CreateView):
+class ModelUploadView(LoginRequiredMixin, generic.CreateView):
     model = Model
     template_name = 'model_upload.html'
     form_class = ModelUploadForm
@@ -80,5 +82,17 @@ class UnsubscribeView(LoginRequiredMixin, View):
 
         return redirect("overview:index")
     
-def test500(request):
-    raise Exception("test")
+class DownloadGlbView(View):
+    def get(self, request, pk):
+        obj = get_object_or_404(Model, pk=pk)
+        return FileResponse(obj.glbfile.open("rb"))
+    
+class DownloadAvaterView(View):
+    def get(self, request, pk):
+        obj = get_object_or_404(Model, pk=pk)
+
+        if obj.is_type == Model.ModelType.AVATERN:
+            path = Path("model/templates/avatern.json")
+            return FileResponse(open(path, "rb"))
+        else:
+            return FileResponse(obj.avaterfile.open("rb"))
