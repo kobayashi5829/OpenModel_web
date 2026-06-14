@@ -37,7 +37,7 @@
 
 /* カードのラッパーリンク */
 .model-card-link {
-    display: flex !important;
+    display: flex;
     flex-direction: column;
     height: 100%;
 }

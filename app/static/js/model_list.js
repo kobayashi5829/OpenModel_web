@@ -1,6 +1,8 @@
 // モデル一覧共通のリアルタイム検索＆フィルタリング機能
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("model_list.js loaded - version 4 - Debug logs enabled");
+
     // 共通要素の取得
     const searchInput = document.getElementById('search-input');
     const searchClearBtn = document.getElementById('search-clear-btn');
@@ -8,53 +10,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterIndicator = document.getElementById('filter-text-indicator');
     const cards = document.querySelectorAll('.model-dashboard-card');
 
-    // 画面種別の判定
-    // ホーム画面は nav-btn-all が存在する
-    const btnAll = document.getElementById('nav-btn-all');
-    const btnPublic = document.getElementById('nav-btn-public');
-    const btnPrivate = document.getElementById('nav-btn-private');
-    const isHome = !!btnAll;
+    // data-page-type 属性から画面種別を確実に判定 (home または public)
+    const sectionEl = document.querySelector('.home-section');
+    const pageType = sectionEl && sectionEl.dataset.pageType ? sectionEl.dataset.pageType.trim().toLowerCase() : 'home';
+    const isHome = pageType === 'home';
+
+    console.log("Page identification:", { pageType, isHome, cardsFound: cards.length });
 
     // 現在の状態
-    let currentFilter = 'all';
     let currentSearchQuery = '';
 
     // フィルタリングと検索の適用
     const applyFilterAndSearch = () => {
         let visibleCount = 0;
         const query = currentSearchQuery.toLowerCase().trim();
+        // スペース（半角・全角）で区切って複数キーワードの配列を作成
+        const keywords = query.split(/[\s　]+/).filter(k => k !== '');
 
-        cards.forEach(card => {
+        console.log("Filtering starts with keywords:", keywords);
+
+        cards.forEach((card, index) => {
             // カード内のモデル名（h3タグ）を取得
             const modelNameEl = card.querySelector('.model-info-body h3');
-            const modelName = modelNameEl ? modelNameEl.textContent.toLowerCase() : '';
+            const modelName = modelNameEl ? modelNameEl.textContent.trim().toLowerCase() : '';
 
-            // 1. フィルター判定
-            let matchesFilter = true;
-            if (isHome) {
-                const isPrivate = card.dataset.private === 'true';
-                if (currentFilter === 'public') {
-                    matchesFilter = !isPrivate;
-                } else if (currentFilter === 'private') {
-                    matchesFilter = isPrivate;
-                }
+            // 検索判定 (複数キーワードがある場合はすべてのキーワードに部分一致するか判定: AND検索)
+            let matchesSearch = true;
+            if (keywords.length > 0) {
+                matchesSearch = keywords.every(keyword => {
+                    if (isHome) {
+                        // マイモデル画面: モデル名での部分一致検索
+                        const match = modelName.includes(keyword);
+                        console.log(`[Home] Card #${index} "${modelName}" vs "${keyword}" -> match:`, match);
+                        return match;
+                    } else {
+                        // パブリックルーム: モデル名または作者名での部分一致検索
+                        const username = card.dataset.username ? card.dataset.username.trim().toLowerCase() : '';
+                        const matchName = modelName.includes(keyword);
+                        const matchUser = username.includes(keyword);
+                        console.log(`[Public] Card #${index} "${modelName}" (user: "${username}") vs "${keyword}" -> matchName: ${matchName}, matchUser: ${matchUser}`);
+                        return matchName || matchUser;
+                    }
+                });
             }
 
-            // 2. 検索判定
-            let matchesSearch = false;
-            if (isHome) {
-                matchesSearch = modelName.includes(query);
-            } else {
-                // パブリックルームはアップロード者名も検索対象
-                const username = card.dataset.username ? card.dataset.username.toLowerCase() : '';
-                matchesSearch = modelName.includes(query) || username.includes(query);
-            }
-
-            // 3. 表示トグル (親の a タグのリンク要素をトグルしてグリッドから完全に除外)
+            // 表示トグル (親の a タグのリンク要素をトグルしてグリッドから完全に除外)
             const cardLink = card.closest('.model-card-link');
             if (cardLink) {
-                if (matchesFilter && matchesSearch) {
-                    cardLink.style.display = 'block';
+                if (matchesSearch) {
+                    cardLink.style.display = '';
                     visibleCount++;
                 } else {
                     cardLink.style.display = 'none';
@@ -62,17 +66,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 4. インジケーターテキストの更新
+        console.log(`Filtering complete. Visible count: ${visibleCount}/${cards.length}`);
+
+        // インジケーターテキストの更新
         if (filterIndicator) {
             if (isHome) {
-                let label = 'My Model';
-                if (currentFilter === 'public') label = 'Public (公開)';
-                if (currentFilter === 'private') label = 'Private (非公開)';
-                
                 if (query) {
-                    filterIndicator.textContent = `表示中: ${label} [検索: "${currentSearchQuery}"] (${visibleCount}件)`;
+                    filterIndicator.textContent = `表示中: My Model [検索: "${currentSearchQuery}"] (${visibleCount}件)`;
                 } else {
-                    filterIndicator.textContent = `表示中: ${label} (${visibleCount}件)`;
+                    filterIndicator.textContent = `表示中: My Model (${visibleCount}件)`;
                 }
             } else {
                 if (query) {
@@ -83,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // 5. 検索結果が0件の場合のプレースホルダーのトグル
+        // 検索結果が0件の場合のプレースホルダーのトグル
         if (noResultsWrapper) {
             if (visibleCount === 0 && cards.length > 0) {
                 noResultsWrapper.style.display = 'block';
@@ -92,22 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
-
-    // ホーム画面限定のタブクリックイベントの登録
-    if (isHome) {
-        const setFilter = (filterType, activeBtn) => {
-            currentFilter = filterType;
-            [btnAll, btnPublic, btnPrivate].forEach(btn => {
-                if (btn) btn.classList.remove('active');
-            });
-            if (activeBtn) activeBtn.classList.add('active');
-            applyFilterAndSearch();
-        };
-
-        if (btnAll) btnAll.addEventListener('click', () => setFilter('all', btnAll));
-        if (btnPublic) btnPublic.addEventListener('click', () => setFilter('public', btnPublic));
-        if (btnPrivate) btnPrivate.addEventListener('click', () => setFilter('private', btnPrivate));
-    }
 
     // 検索入力のイベント監視
     if (searchInput) {

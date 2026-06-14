@@ -5,7 +5,7 @@
             "name": "runserver",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/manage.py",
+            "program": "${workspaceFolder}/app/manage.py",
             "args": [
                 "runserver"
             ],
@@ -16,7 +16,7 @@
             "name": "makemigrations",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/manage.py",
+            "program": "${workspaceFolder}/app/manage.py",
             "args": [
                 "makemigrations"
             ],
@@ -27,7 +27,7 @@
             "name": "migrate",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/manage.py",
+            "program": "${workspaceFolder}/app/manage.py",
             "args": [
                 "migrate",
             ],
@@ -38,7 +38,7 @@
             "name": "createsuperuser",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/manage.py",
+            "program": "${workspaceFolder}/app/manage.py",
             "args": [
                 "createsuperuser",
             ],
