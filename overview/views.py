@@ -79,3 +79,6 @@ class UnsubscribeView(LoginRequiredMixin, View):
         messages.success(request, "退会が完了しました。")
 
         return redirect("overview:index")
+    
+def test500(request):
+    raise Exception("test")

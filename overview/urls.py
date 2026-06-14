@@ -10,4 +10,5 @@ urlpatterns = [
     path('model-detail/<uuid:pk>/', views.ModelDetailView.as_view(), name="model-detail"),
     path('model-delete/<uuid:pk>/', views.ModelDeleteView.as_view(), name="model-delete"),
     path('unsubscribe/', views.UnsubscribeView.as_view(), name="unsubscribe"),
+    path('test500/', views.test500)
 ]

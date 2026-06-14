@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}500 Internal Server Error{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 200px);
+        padding: 3rem 1rem;
+        background-color: #f8fafc;
+    }
+    .error-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f1f5f9;
+        width: 100%;
+        max-width: 480px;
+        padding: 3rem 2rem;
+        text-align: center;
+        animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    /* エラーイラスト (回転する歯車) */
+    .error-illustration {
+        height: 140px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    .gears-container {
+        position: relative;
+        width: 80px;
+        height: 80px;
+    }
+    .gear {
+        position: absolute;
+        background: #cbd5e1;
+        border-radius: 50%;
+    }
+    .gear.large {
+        width: 50px;
+        height: 50px;
+        top: 10px;
+        left: 10px;
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        animation: rotateGear 12s linear infinite;
+    }
+    .gear.small {
+        width: 32px;
+        height: 32px;
+        bottom: 6px;
+        right: 6px;
+        background: #818cf8;
+        animation: rotateGearRev 8s linear infinite;
+    }
+    .gear-tooth {
+        position: absolute;
+        background: inherit;
+        top: 50%;
+        left: 50%;
+        transform-origin: center;
+    }
+    /* 歯車の突起の作成 */
+    .large .gear-tooth { width: 12px; height: 58px; margin-top: -29px; margin-left: -6px; border-radius: 2px; }
+    .small .gear-tooth { width: 8px; height: 38px; margin-top: -19px; margin-left: -4px; border-radius: 2px; }
+    
+    .tooth-1 { transform: translate(-50%, -50%) rotate(0deg); }
+    .tooth-2 { transform: translate(-50%, -50%) rotate(45deg); }
+    .tooth-3 { transform: translate(-50%, -50%) rotate(90deg); }
+    .tooth-4 { transform: translate(-50%, -50%) rotate(135deg); }
+
+    .gear-inner {
+        position: absolute;
+        background: #ffffff;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+    }
+    .large .gear-inner { width: 18px; height: 18px; }
+    .small .gear-inner { width: 10px; height: 10px; }
+
+    @keyframes rotateGear {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    @keyframes rotateGearRev {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(-360deg); }
+    }
+    /* テキスト */
+    .error-code {
+        font-size: 5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
+    }
+    .error-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 1rem;
+    }
+    .error-message {
+        font-size: 0.95rem;
+        color: #64748b;
+        line-height: 1.6;
+        margin-bottom: 2.5rem;
+    }
+    /* ボタン */
+    .btn-home {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+        padding: 0.8rem 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(118, 75, 162, 0.25);
+        transition: all 0.3s;
+    }
+    .btn-home:hover {
+        box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="error-section">
+    <div class="error-card">
+        <div class="error-illustration">
+            <div class="gears-container">
+                <!-- 大歯車 -->
+                <div class="gear large">
+                    <div class="gear-tooth tooth-1"></div>
+                    <div class="gear-tooth tooth-2"></div>
+                    <div class="gear-tooth tooth-3"></div>
+                    <div class="gear-tooth tooth-4"></div>
+                    <div class="gear-inner"></div>
+                </div>
+                <!-- 小歯車 -->
+                <div class="gear small">
+                    <div class="gear-tooth tooth-1"></div>
+                    <div class="gear-tooth tooth-2"></div>
+                    <div class="gear-tooth tooth-3"></div>
+                    <div class="gear-tooth tooth-4"></div>
+                    <div class="gear-inner"></div>
+                </div>
+            </div>
+        </div>
+        <h2 class="error-code">500</h2>
+        <h3 class="error-title">サーバーエラーが発生しました</h3>
+        <p class="error-message">
+            申し訳ありません。サーバー側で一時的なエラーが発生しています。<br>
+            時間をおいてから、再度お試しください。
+        </p>
+        <a href="/" class="btn-home">ホームへ戻る</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}403 Forbidden{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 200px);
+        padding: 3rem 1rem;
+        background-color: #f8fafc;
+    }
+    .error-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f1f5f9;
+        width: 100%;
+        max-width: 480px;
+        padding: 3rem 2rem;
+        text-align: center;
+        animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    /* エラーイラスト (南京錠) */
+    .error-illustration {
+        height: 140px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    .padlock {
+        width: 60px;
+        height: 50px;
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        border-radius: 10px;
+        position: relative;
+        box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+    }
+    .padlock::before {
+        content: '';
+        width: 44px;
+        height: 44px;
+        border: 6px solid #818cf8;
+        border-bottom: none;
+        border-radius: 22px 22px 0 0;
+        position: absolute;
+        top: -36px;
+        left: 8px;
+        box-sizing: border-box;
+    }
+    .padlock::after {
+        content: '';
+        width: 8px;
+        height: 14px;
+        background: #ffffff;
+        border-radius: 4px;
+        position: absolute;
+        top: 18px;
+        left: 26px;
+    }
+    /* テキスト */
+    .error-code {
+        font-size: 5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
+    }
+    .error-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 1rem;
+    }
+    .error-message {
+        font-size: 0.95rem;
+        color: #64748b;
+        line-height: 1.6;
+        margin-bottom: 2.5rem;
+    }
+    /* ボタン */
+    .btn-home {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+        padding: 0.8rem 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(118, 75, 162, 0.25);
+        transition: all 0.3s;
+    }
+    .btn-home:hover {
+        box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="error-section">
+    <div class="error-card">
+        <div class="error-illustration">
+            <div class="padlock"></div>
+        </div>
+        <h2 class="error-code">403</h2>
+        <h3 class="error-title">アクセスが禁止されています</h3>
+        <p class="error-message">
+            このページを表示する権限がありません。<br>
+            セッションがタイムアウトしたか、別の権限アカウントが必要です。
+        </p>
+        <a href="/" class="btn-home">ホームへ戻る</a>
+    </div>
+</section>
+{% endblock %}
