@@ -8,4 +8,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'OpenModel',
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': '',
+        'PORT': '',
+    }
+}
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
