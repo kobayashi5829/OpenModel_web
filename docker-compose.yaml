@@ -18,7 +18,7 @@ services:
       context: .
       dockerfile: docker/nginx/Dockerfile
     ports:
-      - "80:80"
+      - "8010:8010"
     volumes:
       - static-volume:/usr/share/nginx/html/static
       - media-volume:/usr/share/nginx/html/media
