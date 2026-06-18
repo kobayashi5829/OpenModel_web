@@ -39,6 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const avatarRemoveBtn = document.getElementById('avatar-remove-btn');
     const avatarPlaceholder = document.getElementById('avatar-placeholder');
 
+    // accept属性の動的付与によるファイル選択ダイアログのフィルタリング
+    if (glbInput) {
+        glbInput.setAttribute('accept', '.glb');
+    }
+    if (avatarInput) {
+        avatarInput.setAttribute('accept', '.json');
+    }
+
     // ==========================================
     // 1. ドラッグ＆ドロップ共通イベントハンドラ
     // ==========================================
@@ -83,6 +91,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const handleGlbFileSelect = (file) => {
         if (!file) return;
+        
+        // 拡張子チェック
+        if (!file.name.toLowerCase().endsWith('.glb')) {
+            alert('対応している形式は .glb のみです。');
+            resetGlbPreview();
+            return;
+        }
         
         // キャプチャ完了状態をリセット
         captureCompleted = false;
@@ -217,6 +232,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const handleAvatarFileSelect = (file) => {
         if (!file) return;
+
+        // 拡張子チェック
+        if (!file.name.toLowerCase().endsWith('.json')) {
+            alert('対応している形式は .json のみです。');
+            resetAvatarPreview();
+            return;
+        }
 
         if (avatarFilename) avatarFilename.textContent = file.name;
         if (avatarFilesize) avatarFilesize.textContent = formatBytes(file.size);
