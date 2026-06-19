@@ -6,7 +6,7 @@ from accounts.models import CustomUser
 class Model(models.Model):
 
     class ModelType(models.TextChoices):
-        AVATERN = "avatern", "Avatern"
+        AVATURN = "avaturn", "Avaturn"
         OTHER = "other", "その他"
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -21,7 +21,7 @@ class Model(models.Model):
                 allowed_extensions=["glb"]
             )
         ])
-    avaterfile = models.FileField(upload_to="avater/",
+    avatarfile = models.FileField(upload_to="avatar/",
         validators=[
             FileExtensionValidator(
                 allowed_extensions=["json"]
@@ -36,8 +36,8 @@ class Model(models.Model):
     def delete(self, *args, **kwargs):
         if self.glbfile:
             self.glbfile.delete(save=False)
-        if self.avaterfile:
-            self.avaterfile.delete(save=False)
+        if self.avatarfile:
+            self.avatarfile.delete(save=False)
         if self.glbfacefile:
             self.glbfacefile.delete(save=False)
 

@@ -1,7 +1,8 @@
-from pathlib import Path
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.staticfiles import finders
 from django.contrib import messages
 from django.views import generic
 from django.views import View
@@ -87,12 +88,12 @@ class DownloadGlbView(View):
         obj = get_object_or_404(Model, pk=pk)
         return FileResponse(obj.glbfile.open("rb"))
     
-class DownloadAvaterView(View):
+class DownloadAvatarView(View):
     def get(self, request, pk):
         obj = get_object_or_404(Model, pk=pk)
 
-        if obj.is_type == Model.ModelType.AVATERN:
-            path = Path("model/templates/avatern.json")
+        if obj.is_type == Model.ModelType.AVATURN:
+            path = settings.DOWNLOAD_ROOT + "/avaturn.json"
             return FileResponse(open(path, "rb"))
         else:
-            return FileResponse(obj.avaterfile.open("rb"))
+            return FileResponse(obj.avatarfile.open("rb"))

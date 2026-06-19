@@ -11,5 +11,5 @@ urlpatterns = [
     path('model-delete/<uuid:pk>/', views.ModelDeleteView.as_view(), name="model-delete"),
     path('unsubscribe/', views.UnsubscribeView.as_view(), name="unsubscribe"),
     path('download/glb/<uuid:pk>/', views.DownloadGlbView.as_view(), name="download-glb"),
-    path('download/avater/<uuid:pk>/', views.DownloadAvaterView.as_view(), name="download-avater"),
+    path('download/avatar/<uuid:pk>/', views.DownloadAvatarView.as_view(), name="download-avatar"),
 ]

@@ -143,3 +143,6 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+DOWNLOAD_ROOT = os.path.join(BASE_DIR, 'distribution')
+DOWNLOAD_URL = '/distribution/'

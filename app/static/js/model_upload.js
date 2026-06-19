@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // モデルタイプとアバターファイルグループ of 連動制御
     const modelTypeSelect = document.getElementById('id_is_type');
     const avatarGroup = document.getElementById('avatar-upload-group');
-    const avatarInput = document.getElementById('id_avaterfile');
+    const avatarInput = document.getElementById('id_avatarfile');
     
     // GLBファイルアップロード用
     const glbDropZone = document.getElementById('glb-drop-zone');

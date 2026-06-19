@@ -92,14 +92,14 @@
             </div>
 
             <!-- 設定ファイル (ドラッグ＆ドロップ対応、モデルタイプがotherの時のみ表示) -->
-            <div class="form-group {% if form.avaterfile.errors %}has-error{% endif %}" id="avatar-upload-group">
-                <label>Avaterファイル (.json)</label>
+            <div class="form-group {% if form.avatarfile.errors %}has-error{% endif %}" id="avatar-upload-group">
+                <label>Avatarファイル (.json)</label>
                 <div class="file-drop-zone" id="avatar-drop-zone">
                     <div class="drop-zone-icon">📄</div>
                     <div class="drop-zone-text" id="avatar-placeholder">ここにJSONファイルをドラッグ＆ドロップ、または<span>ファイルを選択</span></div>
                     <div class="drop-zone-subtext">対応形式: .json</div>
                     <!-- 隠された実際のファイルインプット -->
-                    {{ form.avaterfile }}
+                    {{ form.avatarfile }}
                     
                     <!-- 選択中のプレビュー表示 -->
                     <div class="file-preview" id="avatar-preview-container">
@@ -111,9 +111,9 @@
                         <button type="button" class="preview-remove-btn" id="avatar-remove-btn" title="ファイルを削除">&times;</button>
                     </div>
                 </div>
-                {% if form.avaterfile.errors %}
+                {% if form.avatarfile.errors %}
                     <ul class="errorlist">
-                        {% for error in form.avaterfile.errors %}
+                        {% for error in form.avatarfile.errors %}
                             <li>{{ error }}</li>
                         {% endfor %}
                     </ul>

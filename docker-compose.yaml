@@ -22,6 +22,7 @@ services:
     volumes:
       - static-volume:/usr/share/nginx/html/static
       - media-volume:/usr/share/nginx/html/media
+      - distribution-volume:/usr/share/nginx/html/distribution
     depends_on:
       - app
   db:
@@ -43,4 +44,5 @@ services:
 volumes:
   static-volume:
   media-volume:
+  distribution-volume:
   db-volume:

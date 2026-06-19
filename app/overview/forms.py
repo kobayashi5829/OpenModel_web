@@ -12,7 +12,7 @@ class ModelUploadForm(forms.ModelForm):
 
     class Meta:
         model = Model
-        fields = ('name', 'is_type', 'is_private', 'glbfile', 'avaterfile', 'glbfacefile')
+        fields = ('name', 'is_type', 'is_private', 'glbfile', 'avatarfile', 'glbfacefile')
 
     def clean_glbfile(self):
         glbfile = self.cleaned_data.get('glbfile')
@@ -24,13 +24,13 @@ class ModelUploadForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         is_type = cleaned_data.get('is_type')
-        avaterfile = cleaned_data.get('avaterfile')
+        avatarfile = cleaned_data.get('avatarfile')
 
-        # モデルタイプが「その他」の場合、avaterfileを必須にする
+        # モデルタイプが「その他」の場合、avatarfileを必須にする
         if is_type == 'other':
-            if not avaterfile:
-                self.add_error('avaterfile', 'モデルタイプが「その他」の場合は、Avaterファイル（.json）が必須です。')
-            elif not avaterfile.name.lower().endswith('.json'):
-                self.add_error('avaterfile', '対応している形式は .json のみです。')
+            if not avatarfile:
+                self.add_error('avatarfile', 'モデルタイプが「その他」の場合は、Avatarファイル（.json）が必須です。')
+            elif not avatarfile.name.lower().endswith('.json'):
+                self.add_error('avatarfile', '対応している形式は .json のみです。')
             
         return cleaned_data
