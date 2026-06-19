@@ -93,7 +93,7 @@ class DownloadAvatarView(View):
         obj = get_object_or_404(Model, pk=pk)
 
         if obj.is_type == Model.ModelType.AVATURN:
-            path = settings.DOWNLOAD_ROOT + "/avaturn.json"
+            path = settings.DISTRIBUTION_ROOT + "/avaturn.json"
             return FileResponse(open(path, "rb"))
         else:
             return FileResponse(obj.avatarfile.open("rb"))

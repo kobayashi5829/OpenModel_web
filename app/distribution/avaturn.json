@@ -1,3 +1,220 @@
 {
-    "test": "value"
+    "bones": [
+        {
+            "name": "Hips",
+            "map": "5.joint_HipMaster"
+        },
+        {
+            "name": "Spine",
+            "map": "6.joint_Torso"
+        },
+        {
+            "name": "Chest",
+            "map": "8.joint_Torso2"
+        },
+        {
+            "name": "LeftShoulder",
+            "map": "33.joint_LeftShoulder"
+        },
+        {
+            "name": "LeftUpperArm",
+            "map": "35.joint_LeftArm"
+        },
+        {
+            "name": "LeftLowerArm",
+            "map": "40.joint_LeftElbow"
+        },
+        {
+            "name": "LeftHand",
+            "map": "45.joint_LeftWrist"
+        },
+        {
+            "name": "RightShoulder",
+            "map": "86.joint_RightShoulder"
+        },
+        {
+            "name": "RightUpperArm",
+            "map": "88.joint_RightArm"
+        },
+        {
+            "name": "RightLowerArm",
+            "map": "93.joint_RightElbow"
+        },
+        {
+            "name": "RightHand",
+            "map": "98.joint_RightWrist"
+        },
+        {
+            "name": "LeftUpperLeg",
+            "map": "132.joint_LeftHipD"
+        },
+        {
+            "name": "LeftLowerLeg",
+            "map": "133.joint_LeftKneeD"
+        },
+        {
+            "name": "LeftFoot",
+            "map": "134.joint_LeftFootD"
+        },
+        {
+            "name": "LeftToes",
+            "map": "135.joint_hidariashisakiEX"
+        },
+        {
+            "name": "RightUpperLeg",
+            "map": "128.joint_RightHipD"
+        },
+        {
+            "name": "RightLowerLeg",
+            "map": "129.joint_RightKneeD"
+        },
+        {
+            "name": "RightFoot",
+            "map": "130.joint_RightFootD"
+        },
+        {
+            "name": "RightToes",
+            "map": "131.joint_migiashisakiEX"
+        },
+        {
+            "name": "Neck",
+            "map": "9.joint_Neck"
+        },
+        {
+            "name": "Head",
+            "map": "10.joint_Head"
+        },
+        {
+            "name": "LeftEye",
+            "map": "14.joint_LeftEyeTip"
+        },
+        {
+            "name": "RightEye",
+            "map": "16.joint_RightEyeTip"
+        },
+        {
+            "name": "Jaw",
+            "map": "69.joint_?shita"
+        },
+        {
+            "name": "LeftThumbProximal",
+            "map": "743.!joint_LeftThumb0M"
+        },
+        {
+            "name": "LeftThumbIntermediate",
+            "map": "48.joint_LeftThumb1"
+        },
+        {
+            "name": "LeftThumbDistal",
+            "map": "49.joint_LeftThumb2"
+        },
+        {
+            "name": "LeftIndexProximal",
+            "map": "51.joint_LeftIndex1"
+        },
+        {
+            "name": "LeftIndexIntermediate",
+            "map": "52.joint_LeftIndex2"
+        },
+        {
+            "name": "LeftIndexDistal",
+            "map": "53.joint_LeftIndex3"
+        },
+        {
+            "name": "LeftMiddleProximal",
+            "map": "55.joint_LeftMiddle1"
+        },
+        {
+            "name": "LeftMiddleIntermediate",
+            "map": "56.joint_LeftMiddle2"
+        },
+        {
+            "name": "LeftMiddleDistal",
+            "map": "57.joint_LeftMiddle3"
+        },
+        {
+            "name": "LeftRingProximal",
+            "map": "59.joint_LeftRing1"
+        },
+        {
+            "name": "LeftRingIntermediate",
+            "map": "60.joint_LeftRing2"
+        },
+        {
+            "name": "LeftRingDistal",
+            "map": "61.joint_LeftRing3"
+        },
+        {
+            "name": "LeftLittleProximal",
+            "map": "63.joint_LeftPinky1"
+        },
+        {
+            "name": "LeftLittleIntermediate",
+            "map": "64.joint_LeftPinky2"
+        },
+        {
+            "name": "LeftLittleDistal",
+            "map": "65.joint_LeftPinky3"
+        },
+        {
+            "name": "RightThumbProximal",
+            "map": "744.!joint_RightThumb0M"
+        },
+        {
+            "name": "RightThumbIntermediate",
+            "map": "101.joint_RightThumb1"
+        },
+        {
+            "name": "RightThumbDistal",
+            "map": "102.joint_RightThumb2"
+        },
+        {
+            "name": "RightIndexProximal",
+            "map": "104.joint_RightIndex1"
+        },
+        {
+            "name": "RightIndexIntermediate",
+            "map": "105.joint_RightIndex2"
+        },
+        {
+            "name": "RightIndexDistal",
+            "map": "106.joint_RightIndex3"
+        },
+        {
+            "name": "RightMiddleProximal",
+            "map": "108.joint_RightMiddle1"
+        },
+        {
+            "name": "RightMiddleIntermediate",
+            "map": "109.joint_RightMiddle2"
+        },
+        {
+            "name": "RightMiddleDistal",
+            "map": "110.joint_RightMiddle3"
+        },
+        {
+            "name": "RightRingProximal",
+            "map": "112.joint_RightRing1"
+        },
+        {
+            "name": "RightRingIntermediate",
+            "map": "113.joint_RightRing2"
+        },
+        {
+            "name": "RightRingDistal",
+            "map": "114.joint_RightRing3"
+        },
+        {
+            "name": "RightLittleProximal",
+            "map": "116.joint_RightPinky1"
+        },
+        {
+            "name": "RightLittleIntermediate",
+            "map": "117.joint_RightPinky2"
+        },
+        {
+            "name": "RightLittleDistal",
+            "map": "118.joint_RightPinky3"
+        }
+    ]
 }
